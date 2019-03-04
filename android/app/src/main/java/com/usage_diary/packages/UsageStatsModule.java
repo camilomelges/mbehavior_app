@@ -1,4 +1,4 @@
-package com.usage_diary.packages;
+package com.research_usage_diary.packages;
 
 import android.widget.Toast;
 
@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.Instant;
 
 public class UsageStatsModule extends ReactContextBaseJavaModule {
 
@@ -86,25 +88,28 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         UsageStats stat = stats.get(i);
         WritableMap app = Arguments.createMap();
 
-        if (!stat.getPackageName().equals("com.android.systemui")) {
-          BitmapDrawable bitDw = ((BitmapDrawable) pm.getApplicationIcon(stat.getPackageName()));
-          Bitmap bitmap = bitDw.getBitmap();
-          
-          ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-          bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-          
-          String stringIcon = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-          
-          app.putString("packageIcon", stringIcon);
+        Bitmap bitmap;
+        if(pm.getApplicationIcon(stat.getPackageName()) instanceof BitmapDrawable) { 
+          bitmap = ((BitmapDrawable) pm.getApplicationIcon(stat.getPackageName())).getBitmap();
+        } else {
+          bitmap = getBitmapFromDrawable(pm.getApplicationIcon(stat.getPackageName()));
         }
+        
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        
+        String stringIcon = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        
+        app.putString("packageIcon", stringIcon);
         
         ApplicationInfo appInfo = pm.getApplicationInfo(stat.getPackageName(), 0);
         
+        long now = Instant.now().toEpochMilli();
         app.putString("packageName", pm.getApplicationLabel(appInfo).toString());
         app.putDouble("totalActivedTime", stat.getFirstTimeStamp());
         app.putDouble("initTimeInInterval", stat.getFirstTimeStamp());
         app.putDouble("lastTimeInInterval", stat.getLastTimeStamp());
-        app.putDouble("lastUsageTime", stat.getLastTimeUsed());
+        app.putDouble("lastUsageTime", now - stat.getLastTimeUsed());
         app.putDouble("usageTime", stat.getTotalTimeInForeground());
 
         apps.pushMap(app);
@@ -113,6 +118,14 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     } catch (Exception ex) {
       promise.reject(ex);
     }
+  }
+
+  private Bitmap getBitmapFromDrawable(Drawable drawable) {
+    final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+    final Canvas canvas = new Canvas(bmp);
+    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+    drawable.draw(canvas);
+    return bmp;
   }
 
   @ReactMethod

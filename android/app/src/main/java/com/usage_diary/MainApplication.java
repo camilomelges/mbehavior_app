@@ -1,6 +1,6 @@
-package com.usage_diary;
+package com.research_usage_diary;
 
-import com.usage_diary.packages.*;
+import com.research_usage_diary.packages.*;
 
 import android.app.Application;
 
