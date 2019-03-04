@@ -8,6 +8,8 @@ import SqLiteAndroid from './android-src/SqLiteAndroid';
 import _ from 'lodash';
 import AndroidAppStyles from './android-src/AndroidAppStyles';
 import AndroidNotifications from './android-src/AndroidNotifications';
+import AndroidPrizes from './android-src/AndroidPrizes';
+import AndroidMyData from './android-src/AndroidMyData';
 
 const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
@@ -152,11 +154,11 @@ export default class AndroidApp extends Component {
       case 1:
         return (<AndroidNotifications/>);
       case 2:
-        return (<Text>teste2</Text>);
+        return (<AndroidPrizes/>);
       case 3: 
-        return (<Text>teste3</Text>);
+        return (<AndroidMyData/>);
       default:
-        return (<AndroidNotifications/>);
+        return (<Text></Text>);
     }
   }
 

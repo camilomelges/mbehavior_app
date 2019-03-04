@@ -106,6 +106,7 @@ export default class AndroidAppStyles {
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
+                paddingBottom: 8,
                 paddingLeft: 30,
                 flex: 0.1,
             },
