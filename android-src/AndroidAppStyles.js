@@ -1,6 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default class AndroidAppStyles {
+
+    constructor(props) {
+        this.state = {
+            screen: {
+                height: Dimensions.get('screen').height,
+                width: Dimensions.get('screen').width
+            }
+        };
+    };
+
     index() {
         return StyleSheet.create({
             container: {
@@ -71,8 +81,8 @@ export default class AndroidAppStyles {
                 flexDirection: 'row'
             },
             buttonTop: {
-                paddingTop: '1.7%',
-                height: '80%',
+                paddingTop: 8,
+                height: 40,
                 width: '30%',
                 color: '#FFF',
                 borderWidth: 1,
@@ -80,18 +90,19 @@ export default class AndroidAppStyles {
                 backgroundColor: '#008317'
             },
             buttonsContainer: {
-                flex: 0.07,
-                paddingTop: 20,
-                paddingBottom: 8,
+                flex: 0.05,
+                marginTop: 20,
+                marginBottom: 10,
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             notificationsContainerList: {
+                flex: 0.8,
                 backgroundColor: '#FFF',
                 paddingBottom: 10,
-                paddingLeft: 30,
-                paddingRight: 30,
+                paddingLeft: '5%',
+                paddingRight: '5%',
                 borderTopColor: '#d0d0d0',
                 borderTopWidth: 1.8,
             },
@@ -101,36 +112,36 @@ export default class AndroidAppStyles {
     notifications() {
         return StyleSheet.create({
             notificationsContainer: {
-              flex: 1,
-              backgroundColor: '#FFF'
+                flex: 0.8,
+                backgroundColor: '#FFF'
             },
             notificationsContainerList: {
+                flex: 0.8,
                 backgroundColor: '#FFF',
                 paddingBottom: 10,
-                paddingLeft: 30,
-                paddingRight: 30,
+                paddingLeft: '5%',
+                paddingRight: '5%',
                 borderTopColor: '#d0d0d0',
                 borderTopWidth: 1.8,
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
-                marginBottom: 30,
-                paddingLeft: 30,
-                flex: 0.1,
+                paddingLeft: '5%',
+                flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
-              borderBottomColor: '#dfe8ff',
-              borderBottomWidth: 1,
-              paddingBottom: 8,
-              paddingTop: 8
+                borderBottomColor: '#dfe8ff',
+                borderBottomWidth: 1,
+                paddingBottom: 8,
+                paddingTop: 8
             },
             notificationsContainerListItemIcon: {
-              height: 40,
-              width: 40
+                height: 40,
+                width: 40
             },
             notificationsContainerListItemName: {
-              marginTop: 10,
-              marginLeft: 8
+                marginTop: 10,
+                marginLeft: 8
             },
             fontPattern: {
                 fontSize: 24,
@@ -162,36 +173,36 @@ export default class AndroidAppStyles {
     prizes() {
         return StyleSheet.create({
             notificationsContainer: {
-              flex: 1,
-              backgroundColor: '#FFF'
+                flex: 0.8,
+                backgroundColor: '#FFF'
             },
             notificationsContainerList: {
+                flex: 0.8,
                 backgroundColor: '#FFF',
                 paddingBottom: 10,
-                paddingLeft: 30,
-                paddingRight: 30,
+                paddingLeft: '5%',
+                paddingRight: '5%',
                 borderTopColor: '#d0d0d0',
                 borderTopWidth: 1.8,
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
-                marginBottom: 22,
-                paddingLeft: 30,
-                flex: 0.1,
+                paddingLeft: '5%',
+                flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
-              borderBottomColor: '#dfe8ff',
-              borderBottomWidth: 1,
-              paddingBottom: 8,
-              paddingTop: 8
+                borderBottomColor: '#dfe8ff',
+                borderBottomWidth: 1,
+                paddingBottom: 8,
+                paddingTop: 8
             },
             notificationsContainerListItemIcon: {
-              height: 40,
-              width: 40
+                height: 40,
+                width: 40
             },
             notificationsContainerListItemName: {
-              marginTop: 10,
-              marginLeft: 8
+                marginTop: 10,
+                marginLeft: 8
             },
             fontPattern: {
                 fontSize: 24,

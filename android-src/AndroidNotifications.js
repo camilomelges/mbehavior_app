@@ -36,25 +36,33 @@ export default class AndroidNotifications extends Component {
         name: 'Formulário x',
         description: 'Preencha esse formulário e ganhe um ticket para o próximo sorteio, quanto mais tickets mais chances de ganhar'
       }],
+      styles: androidAppStyles.notifications()
     };
   };
 
+  onLayout(){
+    this.setState({ styles: androidAppStyles.notifications() });
+  }
+
   render() {
     return (
-        <View style={styles.notificationsContainer}>
-            <View style={styles.notificationsContainerHeader}>
-                <Text style={styles.fontPattern}>Notificações</Text>
+        <View 
+          style={this.state.styles.notificationsContainer}
+          onLayout={this.onLayout.bind(this)}
+          >
+            <View style={this.state.styles.notificationsContainerHeader}>
+                <Text style={this.state.styles.fontPattern}>Notificações</Text>
             </View>
             <FlatList
-            style={styles.notificationsContainerList}
+            style={this.state.styles.notificationsContainerList}
             data={this.state.stats}
             keyExtractor={item => item.id}
             renderItem={({ item }) => {
                 return (
-                <View style={styles.notificationsContainerListItem}>
-                    <View style={styles.inline}>
-                        <View style={styles.notificationsIconContainer}>
-                            <FontAwesome5 style={styles.notificationsIcon} solid name={'comment-alt'}/>
+                <View style={this.state.styles.notificationsContainerListItem}>
+                    <View style={this.state.styles.inline}>
+                        <View style={this.state.styles.notificationsIconContainer}>
+                            <FontAwesome5 style={this.state.styles.notificationsIcon} solid name={'comment-alt'}/>
                         </View>
                         <Text>{item.description}</Text>
                     </View>
@@ -67,4 +75,4 @@ export default class AndroidNotifications extends Component {
   }
 }
 
-const styles = androidAppStyles.notifications();
+// const styles = androidAppStyles.notifications();

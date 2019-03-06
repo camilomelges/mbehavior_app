@@ -40,27 +40,35 @@ export default class AndroidPrizes extends Component {
         sortDate: '17/04/2019',
         description: 'Acumule pontos e ganhe R$100,00 em créditos na play store ou na app store.'
       }],
+      styles: androidAppStyles.prizes()
     };
   };
 
+  onLayout(){
+    this.setState({ styles: androidAppStyles.prizes() });
+  }
+
   render() {
     return (
-        <View style={styles.notificationsContainer}>
-            <View style={styles.notificationsContainerHeader}>
-                <Text style={styles.fontPattern}>Premiações</Text>
+        <View 
+          style={this.state.styles.notificationsContainer}
+          onLayout={this.onLayout.bind(this)}
+          >
+            <View style={this.state.styles.notificationsContainerHeader}>
+                <Text style={this.state.styles.fontPattern}>Premiações</Text>
             </View>
             <FlatList
-            style={styles.notificationsContainerList}
+            style={this.state.styles.notificationsContainerList}
             data={this.state.stats}
             keyExtractor={item => item.id}
             renderItem={({ item }) => {
                 return (
-                <View style={styles.notificationsContainerListItem}>
-                    <View style={styles.inline}>
-                        <View style={styles.notificationsIconContainer}>
-                            <FontAwesome5 style={styles.notificationsIcon} solid name={'money-bill'}/>
+                <View style={this.state.styles.notificationsContainerListItem}>
+                    <View style={this.state.styles.inline}>
+                        <View style={this.state.styles.notificationsIconContainer}>
+                            <FontAwesome5 style={this.state.styles.notificationsIcon} solid name={'money-bill'}/>
                         </View>
-                        <Text style={styles.mT5}>{item.name + '\nSorteio dia ' + item.sortDate}</Text>
+                        <Text style={this.state.styles.mT5}>{item.name + '\nSorteio dia ' + item.sortDate}</Text>
                     </View>
                     <Text>{item.description}</Text>
                 </View>);
@@ -71,4 +79,4 @@ export default class AndroidPrizes extends Component {
   }
 }
 
-const styles = androidAppStyles.prizes();
+//const styles = androidAppStyles.prizes();
