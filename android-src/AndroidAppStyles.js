@@ -86,7 +86,15 @@ export default class AndroidAppStyles {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center'
-            }
+            },
+            notificationsContainerList: {
+                backgroundColor: '#FFF',
+                paddingBottom: 10,
+                paddingLeft: 30,
+                paddingRight: 30,
+                borderTopColor: '#d0d0d0',
+                borderTopWidth: 1.8,
+            },
         });
     }
 
@@ -106,7 +114,7 @@ export default class AndroidAppStyles {
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
-                paddingBottom: 8,
+                marginBottom: 30,
                 paddingLeft: 30,
                 flex: 0.1,
             },
@@ -133,6 +141,10 @@ export default class AndroidAppStyles {
                 flexDirection: 'row'
             },
             notificationsIconContainer: {
+                maxHeight: 40,
+                minHeight: 40,
+                maxWidth: 45,
+                minWidth: 45,
                 backgroundColor: '#112c71',
                 padding: 10,
                 marginRight: 15,
@@ -144,6 +156,70 @@ export default class AndroidAppStyles {
                 textAlign: 'center',
                 fontWeight: 'bold',
             },
+        });
+    }
+
+    prizes() {
+        return StyleSheet.create({
+            notificationsContainer: {
+              flex: 1,
+              backgroundColor: '#FFF'
+            },
+            notificationsContainerList: {
+                backgroundColor: '#FFF',
+                paddingBottom: 10,
+                paddingLeft: 30,
+                paddingRight: 30,
+                borderTopColor: '#d0d0d0',
+                borderTopWidth: 1.8,
+            },
+            notificationsContainerHeader: {
+                paddingTop: 5,
+                marginBottom: 22,
+                paddingLeft: 30,
+                flex: 0.1,
+            },
+            notificationsContainerListItem: {
+              borderBottomColor: '#dfe8ff',
+              borderBottomWidth: 1,
+              paddingBottom: 8,
+              paddingTop: 8
+            },
+            notificationsContainerListItemIcon: {
+              height: 40,
+              width: 40
+            },
+            notificationsContainerListItemName: {
+              marginTop: 10,
+              marginLeft: 8
+            },
+            fontPattern: {
+                fontSize: 24,
+                color: '#112c71',
+                fontFamily: 'Merriweather Sans'
+            },
+            inline: {
+                flexDirection: 'row'
+            },
+            notificationsIconContainer: {
+                maxHeight: 40,
+                minHeight: 40,
+                maxWidth: 45,
+                minWidth: 45,
+                backgroundColor: '#43692b',
+                padding: 10,
+                marginRight: 15,
+                borderRadius: 3
+            },
+            notificationsIcon: {
+                fontSize: 20,
+                color: '#FFF',
+                textAlign: 'center',
+                fontWeight: 'bold',
+            },
+            mT5: {
+                marginTop: 5
+            }
         });
     }
 };

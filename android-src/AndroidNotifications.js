@@ -18,19 +18,23 @@ export default class AndroidNotifications extends Component {
     this.state = {
       stats: [{
         id: '0',
-        description: 'teste0'
+        name: 'Formulário educacional',
+        description: 'Preencha esse formulário e ganhe um ticket para o próximo sorteio, quanto mais tickets mais chances de ganhar'
       },
       {
         id: '1',
-        description: 'teste1'
+        name: 'Formulário profissional',
+        description: 'Preencha esse formulário e ganhe um ticket para o próximo sorteio, quanto mais tickets mais chances de ganhar'
       },
       {
         id: '2',
-        description: 'teste2'
+        name: 'Formulário de interesses',
+        description: 'Preencha esse formulário e ganhe um ticket para o próximo sorteio, quanto mais tickets mais chances de ganhar'
       },
       {
         id: '3',
-        description: 'teste3'
+        name: 'Formulário x',
+        description: 'Preencha esse formulário e ganhe um ticket para o próximo sorteio, quanto mais tickets mais chances de ganhar'
       }],
     };
   };
