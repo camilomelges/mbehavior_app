@@ -64,9 +64,9 @@ export default class AndroidNotifications extends Component {
                         <View style={this.state.styles.notificationsIconContainer}>
                             <FontAwesome5 style={this.state.styles.notificationsIcon} solid name={'comment-alt'}/>
                         </View>
-                        <Text>{item.description}</Text>
+                        <Text style={this.state.styles.fontWhite}>{item.description}</Text>
                     </View>
-                    <Text>{item.description}</Text>
+                    <Text style={this.state.styles.fontWhite}>{item.description}</Text>
                 </View>);
             }}
             />

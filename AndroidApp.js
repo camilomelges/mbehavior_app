@@ -89,7 +89,8 @@ export default class AndroidApp extends Component {
       screen: {
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width
-      }
+      },
+      styles: androidAppStyles.index()
     };
 
     DeviceInfo.isAirPlaneMode().then(airPlaneModeOn => {
@@ -165,28 +166,28 @@ export default class AndroidApp extends Component {
         return (<AndroidMyData/>);
       default:
         return (
-        <View style={styles.notificationsContainerList}>
+        <View style={this.state.styles.notificationsContainer}>
           <ScrollView>
-            <Text> apiLevel {this.state.apiLevel} </Text>
-            <Text> appName {this.state.appName} </Text>
-            <Text> phoneBrand {this.state.phoneBrand} </Text>
-            <Text> phoneCarrier {this.state.phoneCarrier} </Text>
-            <Text> phoneModel {this.state.phoneModel} </Text>
-            <Text> phoneNumber {this.state.phoneNumber} </Text>
-            <Text> phoneManufacturer {this.state.phoneManufacturer} </Text>
-            <Text> systemName {this.state.systemName} </Text>
-            <Text> systemVersion {this.state.systemVersion} </Text>
-            <Text> timezone {this.state.timezone} </Text>
-            <Text> batteryLevel {this.state.batteryLevel} </Text>
-            <Text> ip {this.state.ip} </Text>
-            <Text> userAgent {this.state.userAgent} </Text>
-            <Text> airPlaneModeOn {this.state.airPlaneModeOn} </Text>
-            <Text> isEmulator {this.state.isEmulator} </Text>
-            <Text> isTablet {this.state.isTablet} </Text>
-            <Text> isLandscape {this.state.isLandscape} </Text>
-            <Text> deviceType {this.state.deviceType} </Text>
-            <Text> connectionInfo.type {this.state.connectionInfo.type} </Text>
-            <Text> connectionInfo.effectiveType {this.state.connectionInfo.effectiveType} </Text>
+            <Text style={this.state.styles.fontWhite}> apiLevel {this.state.apiLevel} </Text>
+            <Text style={this.state.styles.fontWhite}> appName {this.state.appName} </Text>
+            <Text style={this.state.styles.fontWhite}> phoneBrand {this.state.phoneBrand} </Text>
+            <Text style={this.state.styles.fontWhite}> phoneCarrier {this.state.phoneCarrier} </Text>
+            <Text style={this.state.styles.fontWhite}> phoneModel {this.state.phoneModel} </Text>
+            <Text style={this.state.styles.fontWhite}> phoneNumber {this.state.phoneNumber} </Text>
+            <Text style={this.state.styles.fontWhite}> phoneManufacturer {this.state.phoneManufacturer} </Text>
+            <Text style={this.state.styles.fontWhite}> systemName {this.state.systemName} </Text>
+            <Text style={this.state.styles.fontWhite}> systemVersion {this.state.systemVersion} </Text>
+            <Text style={this.state.styles.fontWhite}> timezone {this.state.timezone} </Text>
+            <Text style={this.state.styles.fontWhite}> batteryLevel {this.state.batteryLevel} </Text>
+            <Text style={this.state.styles.fontWhite}> ip {this.state.ip} </Text>
+            <Text style={this.state.styles.fontWhite}> userAgent {this.state.userAgent} </Text>
+            <Text style={this.state.styles.fontWhite}> airPlaneModeOn {this.state.airPlaneModeOn} </Text>
+            <Text style={this.state.styles.fontWhite}> isEmulator {this.state.isEmulator} </Text>
+            <Text style={this.state.styles.fontWhite}> isTablet {this.state.isTablet} </Text>
+            <Text style={this.state.styles.fontWhite}> isLandscape {this.state.isLandscape} </Text>
+            <Text style={this.state.styles.fontWhite}> deviceType {this.state.deviceType} </Text>
+            <Text style={this.state.styles.fontWhite}> connectionInfo.type {this.state.connectionInfo.type} </Text>
+            <Text style={this.state.styles.fontWhite}> connectionInfo.effectiveType {this.state.connectionInfo.effectiveType} </Text>
           </ScrollView>
         </View>
         );
@@ -213,27 +214,34 @@ export default class AndroidApp extends Component {
     return `${parseInt(hours)} horas e ${parseInt(minutes)} minutos e ${parseInt(seconds)} segundos`;
   }
 
+  onLayout(){
+    this.setState({ styles: androidAppStyles.index() });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#008317" barStyle="light-content" />
-        <View style={styles.usageDiaryContainer}>
-          <Text style={[styles.usageDiaryTitle, styles.fontPattern]}>Pesquisa</Text>
-          <Text style={[styles.usageDiarySelectedDate, styles.fontPattern]}>{this.state.selectedDate}</Text>
+      <View 
+        style={this.state.styles.container}
+        onLayout={this.onLayout.bind(this)}
+      >
+        <StatusBar backgroundColor="#145cc7" barStyle="light-content" />
+        <View style={this.state.styles.usageDiaryContainer}>
+          <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
+          <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
         </View>
-        <View style={styles.body}>
-          <View style={styles.buttonsContainer}>
-              <TouchableOpacity onPress={() => this.setActualComponent(3)} style={styles.buttonTop} title="Notificações" accessibilityLabel="Notificações">
-                <Text style={[styles.fontPattern, styles.alignCenter]}> Pesquisa </Text>
+        <View style={this.state.styles.body}>
+          <View style={this.state.styles.buttonsContainer}>
+              <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
+                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.setActualComponent(2)} style={styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
-                <Text style={[styles.fontPattern, styles.alignCenter]}> Prêmios </Text>
+              <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
+                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.setActualComponent(1)} style={styles.buttonTop} title="Meus dados" accessibilityLabel="Meus dados">
-                <Text style={[styles.fontPattern, styles.alignCenter]}> Notificações </Text>
+              <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
               </TouchableOpacity>
           </View>
-          <View style={styles.bodyContainer}>
+          <View style={this.state.styles.bodyContainer}>
             {this.renderComponent()}
           </View>
         </View>
@@ -241,7 +249,5 @@ export default class AndroidApp extends Component {
     );
   }
 }
-
-const styles = androidAppStyles.index();
 
 AppRegistry.registerComponent('AndroidApp', () => AndroidApp);

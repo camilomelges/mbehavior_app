@@ -15,13 +15,13 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             container: {
                 flex: 1,
-                backgroundColor: '#008317',
+                backgroundColor: '#145cc7',
             },
             usageDiaryContainer: {
-                flex: 0.4,
+                flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.8 : 0.4,
                 paddingLeft: 15,
-                paddingTop: 20,
-                backgroundColor: '#008317',
+                paddingTop: Dimensions.get('screen').height < Dimensions.get('screen').width ? 5 : 20,
+                backgroundColor: '#145cc7',
                 flexDirection: 'row',
             },
             usageDiary: {
@@ -43,22 +43,23 @@ export default class AndroidAppStyles {
                 borderWidth: 1,
                 height: 10,
                 width: 10,
-                backgroundColor: '#71c733',
-                borderColor: '#71c733',
+                backgroundColor: '#009fff',
+                borderColor: '#FFF',
+            },
+            fontWhite: {
+                color: '#FFF'
             },
             body: {
                 flex: 7,
-                backgroundColor: '#fff'
+                backgroundColor: '#FFF'
             },
             bodyContainer: {
                 flex: 1,
-                backgroundColor: '#FFF'
-            },
-            footer: {
-                borderTopColor: '#FFF',
-                borderTopWidth: 1,
-                backgroundColor: '#008317',
-                flex: 1,
+                paddingTop: 15,
+                paddingLeft: '5%',
+                paddingRight: '5%',
+                backgroundColor: '#FFF',
+                paddingBottom: 15
             },
             footerCalendar: {
                 fontSize: 40,
@@ -86,8 +87,22 @@ export default class AndroidAppStyles {
                 width: '30%',
                 color: '#FFF',
                 borderWidth: 1,
-                borderColor: '#008317',
-                backgroundColor: '#008317'
+                borderColor: '#FFF',
+                backgroundColor: '#009fff'
+            },
+            borderTopLeftRadius: {
+                borderTopLeftRadius: 8
+            },
+            borderTopRightRadius: {
+                borderTopRightRadius: 8
+            },
+            borderRadiusLeft: {
+                borderBottomLeftRadius: 8,
+                borderTopLeftRadius: 8
+            },
+            borderRadiusRight: {
+                borderBottomRightRadius: 8,
+                borderTopRightRadius: 8
             },
             buttonsContainer: {
                 flex: 0.05,
@@ -95,16 +110,31 @@ export default class AndroidAppStyles {
                 marginBottom: 10,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             },
             notificationsContainerList: {
-                flex: 0.8,
+                flex: 2,
                 backgroundColor: '#FFF',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
-                borderTopColor: '#d0d0d0',
+                borderTopColor: '#FFF',
                 borderTopWidth: 1.8,
+            },
+            notificationsContainer: {
+                flex: 1,
+                backgroundColor: '#009fff',
+                borderRadius: 8,
+                paddingLeft: '5%',
+                paddingRight: '5%',
+                borderWidth: 1,
+                borderColor: '#009fff',
+                borderBottomWidth: 0,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+                elevation: 4,
             },
         });
     }
@@ -112,17 +142,31 @@ export default class AndroidAppStyles {
     notifications() {
         return StyleSheet.create({
             notificationsContainer: {
-                flex: 0.8,
-                backgroundColor: '#FFF'
+                flex: 1,
+                backgroundColor: '#009fff',
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#009fff',
+                borderBottomWidth: 0,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+                elevation: 4,
+            },
+            fontWhite: {
+                color: '#FFF'
             },
             notificationsContainerList: {
-                flex: 0.8,
-                backgroundColor: '#FFF',
+                flex: 1,
+                backgroundColor: '#009fff',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
-                borderTopColor: '#d0d0d0',
+                borderTopColor: '#FFF',
                 borderTopWidth: 1.8,
+                borderBottomRightRadius: 8,
+                borderBottomLeftRadius: 8
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
@@ -130,7 +174,7 @@ export default class AndroidAppStyles {
                 flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
-                borderBottomColor: '#dfe8ff',
+                borderBottomColor: '#FFF',
                 borderBottomWidth: 1,
                 paddingBottom: 8,
                 paddingTop: 8
@@ -145,7 +189,7 @@ export default class AndroidAppStyles {
             },
             fontPattern: {
                 fontSize: 24,
-                color: '#112c71',
+                color: '#FFF',
                 fontFamily: 'Merriweather Sans'
             },
             inline: {
@@ -156,7 +200,7 @@ export default class AndroidAppStyles {
                 minHeight: 40,
                 maxWidth: 45,
                 minWidth: 45,
-                backgroundColor: '#112c71',
+                backgroundColor: '#00a7a7',
                 padding: 10,
                 marginRight: 15,
                 borderRadius: 3
@@ -173,17 +217,31 @@ export default class AndroidAppStyles {
     prizes() {
         return StyleSheet.create({
             notificationsContainer: {
-                flex: 0.8,
-                backgroundColor: '#FFF'
+                flex: 1,
+                backgroundColor: '#009fff',
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#009fff',
+                borderBottomWidth: 0,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+                elevation: 4,
+            },
+            fontWhite: {
+                color: '#FFF'
             },
             notificationsContainerList: {
-                flex: 0.8,
-                backgroundColor: '#FFF',
+                flex: 1,
+                backgroundColor: '#009fff',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
-                borderTopColor: '#d0d0d0',
+                borderTopColor: '#FFF',
                 borderTopWidth: 1.8,
+                borderBottomRightRadius: 8,
+                borderBottomLeftRadius: 8
             },
             notificationsContainerHeader: {
                 paddingTop: 5,
@@ -206,7 +264,7 @@ export default class AndroidAppStyles {
             },
             fontPattern: {
                 fontSize: 24,
-                color: '#112c71',
+                color: '#FFF',
                 fontFamily: 'Merriweather Sans'
             },
             inline: {
@@ -217,7 +275,7 @@ export default class AndroidAppStyles {
                 minHeight: 40,
                 maxWidth: 45,
                 minWidth: 45,
-                backgroundColor: '#43692b',
+                backgroundColor: '#009a46',
                 padding: 10,
                 marginRight: 15,
                 borderRadius: 3

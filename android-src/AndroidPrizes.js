@@ -51,7 +51,7 @@ export default class AndroidPrizes extends Component {
   render() {
     return (
         <View 
-          style={this.state.styles.notificationsContainer}
+          style={[this.state.styles.notificationsContainer]}
           onLayout={this.onLayout.bind(this)}
           >
             <View style={this.state.styles.notificationsContainerHeader}>
@@ -68,9 +68,9 @@ export default class AndroidPrizes extends Component {
                         <View style={this.state.styles.notificationsIconContainer}>
                             <FontAwesome5 style={this.state.styles.notificationsIcon} solid name={'money-bill'}/>
                         </View>
-                        <Text style={this.state.styles.mT5}>{item.name + '\nSorteio dia ' + item.sortDate}</Text>
+                        <Text style={[this.state.styles.mT5, this.state.styles.fontWhite]}>{item.name + '\nSorteio dia ' + item.sortDate}</Text>
                     </View>
-                    <Text>{item.description}</Text>
+                    <Text style={this.state.styles.fontWhite}>{item.description}</Text>
                 </View>);
             }}
             />

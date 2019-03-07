@@ -39,9 +39,9 @@ export default class AndroidResearchData extends Component {
                 <Text style={this.state.styles.fontPattern}>Pesquisa</Text>
             </View>
             <View style={this.state.styles.notificationsContainerList}>
-              <Text>{this.state.researchData.name}</Text>
-              <Text>{this.state.researchData.description}</Text>
-              <Text>{this.state.researchData.university}</Text>
+              <Text style={this.state.styles.fontWhite}>{this.state.researchData.name}</Text>
+              <Text style={this.state.styles.fontWhite}>{this.state.researchData.description}</Text>
+              <Text style={this.state.styles.fontWhite}>{this.state.researchData.university}</Text>
             </View>
         </View>
     );
