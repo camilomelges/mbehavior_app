@@ -23,6 +23,11 @@ export default class AndroidAppStyles {
                 paddingTop: Dimensions.get('screen').height < Dimensions.get('screen').width ? 5 : 20,
                 backgroundColor: '#145cc7',
                 flexDirection: 'row',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+                elevation: 4,
             },
             usageDiary: {
                 textAlign: 'left',
@@ -86,9 +91,14 @@ export default class AndroidAppStyles {
                 height: 40,
                 width: '30%',
                 color: '#FFF',
-                borderWidth: 1,
+                borderWidth: 0.3,
                 borderColor: '#FFF',
-                backgroundColor: '#009fff'
+                backgroundColor: '#009fff',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 1,
+                shadowRadius: 1,
+                elevation: 4,
             },
             borderTopLeftRadius: {
                 borderTopLeftRadius: 8
