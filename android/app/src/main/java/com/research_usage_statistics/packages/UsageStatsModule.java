@@ -1,4 +1,4 @@
-package com.research_usage_diary.packages;
+package com.research_usage_statistics.packages;
 
 import android.widget.Toast;
 

@@ -1,6 +1,6 @@
-package com.research_usage_diary;
+package com.research_usage_statistics;
 
-import com.research_usage_diary.packages.*;
+import com.research_usage_statistics.packages.*;
 
 import com.facebook.react.ReactActivity;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "research_usage_diary";
+        return "research_usage_statistics";
     }
 
     @Override
