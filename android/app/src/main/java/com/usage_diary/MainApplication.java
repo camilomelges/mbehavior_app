@@ -31,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
         new SQLitePluginPackage(),
         new MainReactPackage(),
-            new RNDeviceInfo(),
+        new RNDeviceInfo(),
         new BackgroundTaskPackage(),
         new VectorIconsPackage(),
         new RNAndroidInstalledAppsPackage(),

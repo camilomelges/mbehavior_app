@@ -137,7 +137,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-device-info')
+    implementation project(':react-native-device-info')
     implementation project(':react-native-background-task')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-android-installed-apps')

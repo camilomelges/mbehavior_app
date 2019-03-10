@@ -36,7 +36,7 @@ export default class AndroidResearchData extends Component {
           onLayout={this.onLayout.bind(this)}
           >
             <View style={this.state.styles.notificationsContainerHeader}>
-                <Text style={this.state.styles.fontPattern}>Pesquisa</Text>
+                <Text style={[this.state.styles.fontPattern, {textAlignVertical: "center", textAlign: "center"}]}>Pesquisa</Text>
             </View>
             <View style={this.state.styles.notificationsContainerList}>
               <Text style={this.state.styles.fontWhite}>{this.state.researchData.name}</Text>

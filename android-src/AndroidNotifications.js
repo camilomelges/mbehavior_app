@@ -51,7 +51,7 @@ export default class AndroidNotifications extends Component {
           onLayout={this.onLayout.bind(this)}
           >
             <View style={this.state.styles.notificationsContainerHeader}>
-                <Text style={this.state.styles.fontPattern}>Notificações</Text>
+                <Text style={[this.state.styles.fontPattern, {textAlignVertical: "center", textAlign: "center"}]}>Notificações</Text>
             </View>
             <FlatList
             style={this.state.styles.notificationsContainerList}

@@ -169,8 +169,7 @@ export default class AndroidAppStyles {
                 borderBottomLeftRadius: 8
             },
             notificationsContainerHeader: {
-                paddingTop: 5,
-                paddingLeft: '5%',
+                justifyContent: 'center',
                 flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
@@ -244,8 +243,7 @@ export default class AndroidAppStyles {
                 borderBottomLeftRadius: 8
             },
             notificationsContainerHeader: {
-                paddingTop: 5,
-                paddingLeft: '5%',
+                justifyContent: 'center',
                 flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
