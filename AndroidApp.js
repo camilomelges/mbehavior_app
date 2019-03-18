@@ -34,7 +34,7 @@ const db = SQLite.openDatabase({ name: 'usageStatesDb.db' });
 BackgroundTask.define(async () => {
   UsageStats.getAppsToday()
     .then(apps => {
-      insertAutoDb(apps);
+      verifyIfOpenSchedule(apps);
     })
     .catch(error => {
       alert(error);
@@ -43,12 +43,17 @@ BackgroundTask.define(async () => {
   BackgroundTask.finish();
 });
 
-function insertAutoDb(apps) {
-  db.transaction((tx) => {
-    tx.executeSql(`DELETE FROM apps WHERE DATE(created) = "${moment().tz('Europe/London').format('YYYY-MM-DD')}"`, []);
-    _.forEach(apps, function (app, appKey) {
-      tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime) VALUES ("${app.packageIcon}", "${app.packageName}", ${app.usageTime})`, []);
-    })
+function verifyIfOpenSchedule(apps) {
+  this.selectAppsOrderLastUsage();
+  let lastOpenedApps = this.state.stats;
+  _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
+    _.forEach(apps, function (apps, appKey) {
+      if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
+        lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
+        sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
+        sqLiteAndroid.insertAppLast(app);
+      }
+    });
   });
 }
 
@@ -106,11 +111,32 @@ export default class AndroidApp extends Component {
     });
 
     NetInfo.getConnectionInfo().then((connectionInfo) => {
-      this.setState({ connectionInfo })
+      this.setState({ connectionInfo });
     });
 
-    sqLiteAndroid.createTableIfNotExists();
+    this.getStats();
   };
+
+  verifyIfOpen(apps) {
+    console.log('verifyIfOpen');
+    sqLiteAndroid.insertFirstApps(apps);
+    this.selectAppsOrderLastUsage();
+    console.log(this.state.stats)
+    if (this.state.stats && this.state.stats.length) {
+      _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
+        _.forEach(apps, function (app, appKey) {
+          if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
+            lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
+            sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
+            sqLiteAndroid.insertAppLast(app);
+          }
+        });
+      });
+    } else {
+      console.log('else');
+      sqLiteAndroid.insertFirstApps(apps);
+    }
+  }
 
   componentDidMount() {
     BackgroundTask.schedule({
@@ -122,7 +148,7 @@ export default class AndroidApp extends Component {
   }
 
   async checkStatus() {
-    const status = await BackgroundTask.statusAsync()
+    const status = await BackgroundTask.statusAsync();
 
     if (status.available) {
       return;
@@ -140,12 +166,26 @@ export default class AndroidApp extends Component {
     this.setState({ isFetching: true }, function () { this.getStats() });
   }
 
+  selectAppsOrderLastUsage () {
+    console.log('selectAppsOrderLastUsage');
+    db.transaction((tx) => {
+      let stats = [];
+      tx.executeSql(`SELECT * from apps`, [], function (tx, data) {
+        _.forEach(data.rows, function (table, key) {
+          console.log(data.rows.item(key));
+          stats.push(data.rows.item(key));
+        });
+      });
+      this.setState({ stats });
+    });
+  }
+
   getStats() {
     UsageStats.getAppsToday()
-      .then(stats => {
-        sqLiteAndroid.updateDatabaseFromToday(stats);
-        this.setState({ stats })
-        this.setState({ isFetching: false })
+      .then(apps => {
+        this.verifyIfOpen(apps);
+        this.selectAppsOrderLastUsage();
+        this.setState({ isFetching: false });
       })
       .catch(error => {
         alert(error);

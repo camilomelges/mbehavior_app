@@ -111,6 +111,8 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         app.putDouble("lastTimeInInterval", stat.getLastTimeStamp());
         app.putDouble("lastUsageTime", now - stat.getLastTimeUsed());
         app.putDouble("usageTime", stat.getTotalTimeInForeground());
+        app.putDouble("usageInThisSession", 0);
+        app.putBoolean("last", true);
 
         apps.pushMap(app);
       }
@@ -147,7 +149,9 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         appInfo.putDouble("initTimeInInterval", stat.getFirstTimeStamp());
         appInfo.putDouble("lastTimeInInterval", stat.getLastTimeStamp());
         appInfo.putDouble("lastUsageTime", stat.getLastTimeUsed());
+        appInfo.putDouble("usageInThisSession", 0);
         appInfo.putDouble("usageTime", stat.getTotalTimeInForeground());
+        appInfo.putBoolean("last", true);
 
         list.pushMap(appInfo);
       }
