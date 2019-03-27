@@ -1,4 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
+import _ from 'lodash';
 
 const db = SQLite.openDatabase({ name: 'usageStatesDb.db' });
 
@@ -25,18 +26,17 @@ export default class SqLiteAndroid {
     })
   }
 
-  insertFirstApps(apps) {
+  async insertFirstApps(apps) {
     console.log('insertFirstApps')
-    db.transaction((tx) => {
-      _.forEach(apps, function (app, appKey) {
-        tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime, lastUsageTime, usageInThisSession, last) VALUES (
-          "${app.packageIcon}", 
-          "${app.packageName}", 
-          "${app.usageTime}", 
-          "${app.lastUsageTime}", 
-          "${app.usageInThisSession}"
-          "${app.last}"
-          )`, []);
+    _.forEach(apps, function (app, appKey) {
+      db.transaction((tx) => {
+          tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime, lastUsageTime, usageInThisSession) VALUES (
+            "${app.packageIcon}", 
+            "${app.packageName}", 
+            "${app.usageTime}", 
+            "${app.lastUsageTime}", 
+            "${app.usageInThisSession}"
+            )`, []);
       });
     });
   }
@@ -50,18 +50,6 @@ export default class SqLiteAndroid {
         });
       });
       return lastOpenedApps;
-    });
-  }
-
-  selectFromDatabaseForDate(selectedDate) {
-    db.transaction((tx) => {
-      let stats = [];
-      tx.executeSql(`SELECT * FROM apps WHERE DATE(created) = "${selectedDate}"`, [], function (txn, data) {
-        _.forEach(data.rows, function (table, key) {
-          stats.push(data.rows.item(key))
-        });
-      })
-      this.setState({ stats })
     });
   }
 
