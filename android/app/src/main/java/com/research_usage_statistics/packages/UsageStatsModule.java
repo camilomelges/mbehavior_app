@@ -100,7 +100,8 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         
         String stringIcon = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         
-        app.putString("packageIcon", stringIcon);
+        // app.putString("packageIcon", stringIcon);
+        app.putString("packageIcon", "stringIcon");
         
         ApplicationInfo appInfo = pm.getApplicationInfo(stat.getPackageName(), 0);
         

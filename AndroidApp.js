@@ -3,6 +3,7 @@ import moment from 'moment';
 import tx from 'moment-timezone';
 import BackgroundTask from 'react-native-background-task';
 import SQLite from 'react-native-sqlite-storage';
+import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
 import SqLiteAndroid from './android-src/SqLiteAndroid';
 import _ from 'lodash';
@@ -31,6 +32,8 @@ const UsageStats = NativeModules.UsageStats;
 
 const db = SQLite.openDatabase({ name: 'usageStatesDb.db' });
 
+// const dtb = Storage.open('usageStatesDb.db');
+
 BackgroundTask.define(async () => {
   UsageStats.getAppsToday()
     .then(apps => {
@@ -47,7 +50,7 @@ function verifyIfOpenSchedule(apps) {
   this.selectAppsOrderLastUsage();
   let lastOpenedApps = this.state.stats;
   _.forEach(lastOpenedApps, function (lastOpenedAppKey, lastOpenedApp) {
-    _.forEach(apps, function (appKey, apps) {
+    _.forEach(apps, function (appKey, app) {
       if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
         lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
         sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
@@ -117,28 +120,43 @@ export default class AndroidApp extends Component {
     this.getStats();
   };
 
-  async verifyIfOpen(apps) {
-    try {
-      await sqLiteAndroid.insertFirstApps(apps);
-      await this.selectAppsOrderLastUsage();
-      console.log('terminou');
-      if (this.state.stats && this.state.stats.length) {
-        _.forEach(lastOpenedApps, function (lastOpenedAppKey, lastOpenedApp) {
-          _.forEach(apps, function (appKey, app) {
-            if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
-              lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
-              sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
-              sqLiteAndroid.insertAppLast(app);
+  verifyIfOpen = async (apps, callback) => {
+    console.log('iniciou')
+    // sqLiteAndroid.createTableIfNotExists();
+    // sqLiteAndroid.insertFirstApps(apps);
+    await this.selectAppsOrderLastUsage((lastOpenedApps) => {
+      console.log('6');
+      if (lastOpenedApps && lastOpenedApps.length) {
+        console.log('7')
+        _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
+          console.log('8');
+          console.log('lastOpenedApp', lastOpenedApp);
+          _.forEach(apps, function (app, appKey) {
+            console.log('9');
+            if (app.packageName == lastOpenedApp.packageName) {
+              console.log('app', app);
+            console.log('lastOpenedApp', lastOpenedApp)
+            }
+            if ((app.packageName === lastOpenedApp.packageName) && (app.lastUsageTime != lastOpenedApp.lastUsageTime)) {
+              console.log('sim');
+              lastOpenedApp.usageInThisSession = app.lastUsageTime - lastOpenedApp.lastUsageTime;
+              sqLiteAndroid.updateLastUsageApp(lastOpenedApp, app => {
+                sqLiteAndroid.insertAppLast(app, app => {
+                  return callback(app);
+                });
+              });
             }
           });
         });
+        console.log('terminou');
+        callback(lastOpenedApps);
       } else {
         console.log('else');
-        sqLiteAndroid.insertFirstApps(apps);
-      }      
-    } catch (e) {
-      console.log(e)
-    }
+        sqLiteAndroid.insertFirstApps((apps), apps => {
+          callback(apps);
+        });
+      }
+    });
   }
 
   componentDidMount() {
@@ -169,30 +187,35 @@ export default class AndroidApp extends Component {
     this.setState({ isFetching: true }, function () { this.getStats() });
   }
 
-  async selectAppsOrderLastUsage () {
+  selectAppsOrderLastUsage = async (callback) => {
     console.log('selectAppsOrderLastUsage');
-    try {
-      db.transaction((tx) => {
-        let stats = [];
-        tx.executeSql(`SELECT * from apps WHERE last = 1`, [], function (tx, data) {
-          console.log('rows ' + data.rows.length)
-          _.forEach(data.rows, function (table, key) {
-            stats.push(data.rows.item(key));
-          });
-          this.setState({ stats });
+    console.log('1')
+    db.transaction((tx) => {
+      console.log('2')
+      let lastOpenedApps = [];
+      tx.executeSql(`
+        SELECT id, packageName, usageTime, lastUsageTime, 
+        usageInThisSession, last, created from apps WHERE last = 1
+      `, [], function (tx, data) {
+        console.log('3')
+        _.forEach(data.rows, function (table, key) {
+          lastOpenedApps.push(data.rows.item(key));
         });
-      }); 
-    } catch(e) {
-      console.log(e);
-    }
+        console.log('4')
+        console.log('5')
+        callback(lastOpenedApps);
+      });
+    });
   }
 
   getStats() {
     UsageStats.getAppsToday()
       .then(apps => {
-        this.verifyIfOpen(apps);
-        // this.selectAppsOrderLastUsage();
-        this.setState({ isFetching: false });
+        this.verifyIfOpen(apps, () => {
+          console.log('finalmente')
+          // this.selectAppsOrderLastUsage();
+          this.setState({ isFetching: false });
+        });
       })
       .catch(error => {
         alert(error);
@@ -206,37 +229,37 @@ export default class AndroidApp extends Component {
   renderComponent() {
     switch (this.state.actualComponent) {
       case 1:
-        return (<AndroidNotifications/>);
+        return (<AndroidNotifications />);
       case 2:
-        return (<AndroidPrizes/>);
-      case 3: 
-        return (<AndroidMyData/>);
+        return (<AndroidPrizes />);
+      case 3:
+        return (<AndroidMyData />);
       default:
         return (
-        <View style={this.state.styles.notificationsContainer}>
-          <ScrollView>
-            <Text style={this.state.styles.fontWhite}> apiLevel {this.state.apiLevel} </Text>
-            <Text style={this.state.styles.fontWhite}> appName {this.state.appName} </Text>
-            <Text style={this.state.styles.fontWhite}> phoneBrand {this.state.phoneBrand} </Text>
-            <Text style={this.state.styles.fontWhite}> phoneCarrier {this.state.phoneCarrier} </Text>
-            <Text style={this.state.styles.fontWhite}> phoneModel {this.state.phoneModel} </Text>
-            <Text style={this.state.styles.fontWhite}> phoneNumber {this.state.phoneNumber} </Text>
-            <Text style={this.state.styles.fontWhite}> phoneManufacturer {this.state.phoneManufacturer} </Text>
-            <Text style={this.state.styles.fontWhite}> systemName {this.state.systemName} </Text>
-            <Text style={this.state.styles.fontWhite}> systemVersion {this.state.systemVersion} </Text>
-            <Text style={this.state.styles.fontWhite}> timezone {this.state.timezone} </Text>
-            <Text style={this.state.styles.fontWhite}> batteryLevel {this.state.batteryLevel} </Text>
-            <Text style={this.state.styles.fontWhite}> ip {this.state.ip} </Text>
-            <Text style={this.state.styles.fontWhite}> userAgent {this.state.userAgent} </Text>
-            <Text style={this.state.styles.fontWhite}> airPlaneModeOn {this.state.airPlaneModeOn} </Text>
-            <Text style={this.state.styles.fontWhite}> isEmulator {this.state.isEmulator} </Text>
-            <Text style={this.state.styles.fontWhite}> isTablet {this.state.isTablet} </Text>
-            <Text style={this.state.styles.fontWhite}> isLandscape {this.state.isLandscape} </Text>
-            <Text style={this.state.styles.fontWhite}> deviceType {this.state.deviceType} </Text>
-            <Text style={this.state.styles.fontWhite}> connectionInfo.type {this.state.connectionInfo.type} </Text>
-            <Text style={this.state.styles.fontWhite}> connectionInfo.effectiveType {this.state.connectionInfo.effectiveType} </Text>
-          </ScrollView>
-        </View>
+          <View style={this.state.styles.notificationsContainer}>
+            <ScrollView>
+              <Text style={this.state.styles.fontWhite}> apiLevel {this.state.apiLevel} </Text>
+              <Text style={this.state.styles.fontWhite}> appName {this.state.appName} </Text>
+              <Text style={this.state.styles.fontWhite}> phoneBrand {this.state.phoneBrand} </Text>
+              <Text style={this.state.styles.fontWhite}> phoneCarrier {this.state.phoneCarrier} </Text>
+              <Text style={this.state.styles.fontWhite}> phoneModel {this.state.phoneModel} </Text>
+              <Text style={this.state.styles.fontWhite}> phoneNumber {this.state.phoneNumber} </Text>
+              <Text style={this.state.styles.fontWhite}> phoneManufacturer {this.state.phoneManufacturer} </Text>
+              <Text style={this.state.styles.fontWhite}> systemName {this.state.systemName} </Text>
+              <Text style={this.state.styles.fontWhite}> systemVersion {this.state.systemVersion} </Text>
+              <Text style={this.state.styles.fontWhite}> timezone {this.state.timezone} </Text>
+              <Text style={this.state.styles.fontWhite}> batteryLevel {this.state.batteryLevel} </Text>
+              <Text style={this.state.styles.fontWhite}> ip {this.state.ip} </Text>
+              <Text style={this.state.styles.fontWhite}> userAgent {this.state.userAgent} </Text>
+              <Text style={this.state.styles.fontWhite}> airPlaneModeOn {this.state.airPlaneModeOn} </Text>
+              <Text style={this.state.styles.fontWhite}> isEmulator {this.state.isEmulator} </Text>
+              <Text style={this.state.styles.fontWhite}> isTablet {this.state.isTablet} </Text>
+              <Text style={this.state.styles.fontWhite}> isLandscape {this.state.isLandscape} </Text>
+              <Text style={this.state.styles.fontWhite}> deviceType {this.state.deviceType} </Text>
+              <Text style={this.state.styles.fontWhite}> connectionInfo.type {this.state.connectionInfo.type} </Text>
+              <Text style={this.state.styles.fontWhite}> connectionInfo.effectiveType {this.state.connectionInfo.effectiveType} </Text>
+            </ScrollView>
+          </View>
         );
     }
   }
@@ -261,13 +284,13 @@ export default class AndroidApp extends Component {
     return `${parseInt(hours)} horas e ${parseInt(minutes)} minutos e ${parseInt(seconds)} segundos`;
   }
 
-  onLayout(){
+  onLayout() {
     this.setState({ styles: androidAppStyles.index() });
   }
 
   render() {
     return (
-      <View 
+      <View
         style={this.state.styles.container}
         onLayout={this.onLayout.bind(this)}
       >
@@ -278,15 +301,15 @@ export default class AndroidApp extends Component {
         </View>
         <View style={this.state.styles.body}>
           <View style={this.state.styles.buttonsContainer}>
-              <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
-                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
-                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
-                <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
+              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
+              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
+            </TouchableOpacity>
           </View>
           <View style={this.state.styles.bodyContainer}>
             {this.renderComponent()}
