@@ -11,6 +11,7 @@ import AndroidAppStyles from './android-src/AndroidAppStyles';
 import AndroidNotifications from './android-src/AndroidNotifications';
 import AndroidPrizes from './android-src/AndroidPrizes';
 import AndroidMyData from './android-src/ResearchData';
+import AndroidAppsLifeTime from './android-src/AndroidAppsLifeTime';
 
 const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
@@ -34,31 +35,31 @@ const db = SQLite.openDatabase({ name: 'usageStatesDb.db' });
 
 // const dtb = Storage.open('usageStatesDb.db');
 
-BackgroundTask.define(async () => {
-  UsageStats.getAppsToday()
-    .then(apps => {
-      verifyIfOpenSchedule(apps);
-    })
-    .catch(error => {
-      alert(error);
-    });
-  // Remember to call finish()
-  BackgroundTask.finish();
-});
+// BackgroundTask.define(async () => {
+//   UsageStats.getAppsToday()
+//     .then(apps => {
+//       verifyIfOpenSchedule(apps);
+//     })
+//     .catch(error => {
+//       alert(error);
+//     });
+//   // Remember to call finish()
+//   BackgroundTask.finish();
+// });
 
-function verifyIfOpenSchedule(apps) {
-  this.selectAppsOrderLastUsage();
-  let lastOpenedApps = this.state.stats;
-  _.forEach(lastOpenedApps, function (lastOpenedAppKey, lastOpenedApp) {
-    _.forEach(apps, function (appKey, app) {
-      if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
-        lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
-        sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
-        sqLiteAndroid.insertAppLast(app);
-      }
-    });
-  });
-}
+// function verifyIfOpenSchedule(apps) {
+//   this.selectAppsOrderLastUsage();
+//   let lastOpenedApps = this.state.stats;
+//   _.forEach(lastOpenedApps, function (lastOpenedAppKey, lastOpenedApp) {
+//     _.forEach(apps, function (appKey, app) {
+//       if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
+//         lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
+//         sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
+//         sqLiteAndroid.insertAppLast(app);
+//       }
+//     });
+//   });
+// }
 
 export default class AndroidApp extends Component {
 
@@ -125,22 +126,19 @@ export default class AndroidApp extends Component {
     // sqLiteAndroid.createTableIfNotExists();
     // sqLiteAndroid.insertFirstApps(apps);
     await this.selectAppsOrderLastUsage((lastOpenedApps) => {
-      console.log('6');
       if (lastOpenedApps && lastOpenedApps.length) {
-        console.log('7')
         _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
-          console.log('8');
-          console.log('lastOpenedApp', lastOpenedApp);
+          // console.log('lastOpenedApp', lastOpenedApp);
           _.forEach(apps, function (app, appKey) {
-            console.log('9');
-            if (app.packageName == lastOpenedApp.packageName) {
-              console.log('app', app);
-            console.log('lastOpenedApp', lastOpenedApp)
-            }
-            if ((app.packageName === lastOpenedApp.packageName) && (app.lastUsageTime != lastOpenedApp.lastUsageTime)) {
+            if((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
               console.log('sim');
-              lastOpenedApp.usageInThisSession = app.lastUsageTime - lastOpenedApp.lastUsageTime;
-              sqLiteAndroid.updateLastUsageApp(lastOpenedApp, app => {
+              console.log(app.packageName);
+              console.log(lastOpenedApp.usageInThisSession);
+              console.log(lastOpenedApp.id);
+              console.log(lastOpenedApp.usageTime);
+              console.log(app.usageTime);
+              lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
+              sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
                 sqLiteAndroid.insertAppLast(app, app => {
                   return callback(app);
                 });
@@ -194,8 +192,7 @@ export default class AndroidApp extends Component {
       console.log('2')
       let lastOpenedApps = [];
       tx.executeSql(`
-        SELECT id, packageName, usageTime, lastUsageTime, 
-        usageInThisSession, last, created from apps WHERE last = 1
+        SELECT * from apps WHERE last = 1
       `, [], function (tx, data) {
         console.log('3')
         _.forEach(data.rows, function (table, key) {
@@ -234,6 +231,8 @@ export default class AndroidApp extends Component {
         return (<AndroidPrizes />);
       case 3:
         return (<AndroidMyData />);
+      case 4:
+        return (<AndroidAppsLifeTime />);
       default:
         return (
           <View style={this.state.styles.notificationsContainer}>
@@ -307,7 +306,7 @@ export default class AndroidApp extends Component {
             <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
               <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+            <TouchableOpacity onPress={() => this.setActualComponent(4)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
               <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
             </TouchableOpacity>
           </View>

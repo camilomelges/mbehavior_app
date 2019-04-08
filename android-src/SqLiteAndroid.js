@@ -10,18 +10,20 @@ export default class SqLiteAndroid {
         'DROP TABLE apps'
       );
       tx.executeSql(
-        'CREATE TABLE apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageIcon TEXT, packageName TEXT, usageTime INT NOT NULL, lastUsageTime INT NOT NULL, usageInThisSession INT NOT NULL DEFAULT 0, last BIT NOT NULL DEFAULT 1, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
+        'CREATE TABLE apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageIcon TEXT, packageName TEXT, usageTime BIGINT UNSIGNED NOT NULL, lastUsageTime BIGINT UNSIGNED NOT NULL, usageInThisSession BIGINT UNSIGNED NOT NULL DEFAULT 0, last BIT NOT NULL DEFAULT 1, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
         []
       );
     });
   };
 
-  selectAllFromApps() {
+  selectAllFromApps(callback) {
     db.transaction((tx) => {
-      tx.executeSql("SELECT * FROM apps", [], function (txn, data) {
+      tx.executeSql("SELECT * FROM apps WHERE last = 0 ORDER BY id DESC", [], function (txn, data) {
+        let apps = [];
         _.forEach(data.rows, function (app, key) {
-          console.log(data.rows.item(key));
+          apps.push(data.rows.item(key));
         });
+        callback(apps);
       });
     })
   }
@@ -54,10 +56,10 @@ export default class SqLiteAndroid {
     });
   }
 
-  updateLastUsageApp(app, callback){
+  updateLastUsageApp(lastOpenedApp, callback){
     db.transaction((tx) => {
-      tx.executeSql(`UPDATE apps SET last = 0, usageInThisSession = ${app.usageInThisSession} WHERE id = "${app.id}"`, [], function (txn, data) {
-        callback(app);
+      tx.executeSql(`UPDATE apps SET last = 0, usageInThisSession = ${lastOpenedApp.usageInThisSession} WHERE id = "${lastOpenedApp.id}"`, [], function (txn, data) {
+        callback(lastOpenedApp);
       })
     });
   }
@@ -70,7 +72,7 @@ export default class SqLiteAndroid {
         "${app.usageTime}", 
         "${app.lastUsageTime}", 
         "${app.usageInThisSession}",
-        "${app.last}"
+        "1"
         )`, [], function (txn, data) {
           callback(app);
         })
