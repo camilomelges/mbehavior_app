@@ -105,12 +105,12 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         
         ApplicationInfo appInfo = pm.getApplicationInfo(stat.getPackageName(), 0);
         
-        long now = Instant.now().toEpochMilli();
+        // long now = Instant.now().toEpochMilli();
         app.putString("packageName", pm.getApplicationLabel(appInfo).toString());
         app.putDouble("totalActivedTime", stat.getFirstTimeStamp());
         app.putDouble("initTimeInInterval", stat.getFirstTimeStamp());
         app.putDouble("lastTimeInInterval", stat.getLastTimeStamp());
-        app.putDouble("lastUsageTime", now - stat.getLastTimeUsed());
+        app.putDouble("lastUsageTime", stat.getLastTimeUsed());
         app.putDouble("usageTime", stat.getTotalTimeInForeground());
         app.putDouble("usageInThisSession", 0);
         app.putBoolean("last", true);

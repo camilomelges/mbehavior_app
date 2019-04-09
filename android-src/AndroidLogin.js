@@ -1,39 +1,69 @@
 import React, { Component } from 'react';
-import AndroidAppStyles from './AndroidAppStyles';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Alert, Button, TextInput, View, StyleSheet } from 'react-native';
+import SqLiteAndroid from './SqLiteAndroid';
 
-const androidAppStyles = new AndroidAppStyles();
+const sqLiteAndroid = new SqLiteAndroid();
 
-import {
-    Text,
-    View
-} from 'react-native';
-
-export default class AndroidLogin extends Component {
-
+export default class App extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
-        form: {
-            login: '',
-            password: ''
-        },
-        styles: androidAppStyles.notifications()
+      username: '',
+      password: '',
+      logged: false
     };
-  };
+  }
+  
+  onLogin() {
+    const { username, password } = this.state;
 
-  onLayout(){
-    this.setState({ styles: androidAppStyles.notifications() });
+    sqLiteAndroid.insertUser(username, login => {
+      console.log('login', login);
+      this.setState({logged: true});
+    });
   }
 
   render() {
     return (
-        <View onLayout={this.onLayout.bind(this)}>
-            <Text>login</Text>
-        </View>
+      <View style={styles.container}>
+        <TextInput
+          value={this.state.username}
+          onChangeText={(username) => this.setState({ username })}
+          placeholder={'Username'}
+          style={styles.input}
+        />
+        <TextInput
+          value={this.state.password}
+          onChangeText={(password) => this.setState({ password })}
+          placeholder={'Password'}
+          secureTextEntry={true}
+          style={styles.input}
+        />
+        
+        <Button
+          title={'Login'}
+          style={styles.input}
+          onPress={this.onLogin.bind(this)}
+        />
+      </View>
     );
   }
 }
 
-// const styles = androidAppStyles.notifications();
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+  },
+  input: {
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginBottom: 10,
+  },
+});

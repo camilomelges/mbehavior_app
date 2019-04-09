@@ -11,6 +11,7 @@ import AndroidAppStyles from './android-src/AndroidAppStyles';
 import AndroidNotifications from './android-src/AndroidNotifications';
 import AndroidPrizes from './android-src/AndroidPrizes';
 import AndroidMyData from './android-src/ResearchData';
+import AndroidLogin from './android-src/AndroidLogin';
 import AndroidAppsLifeTime from './android-src/AndroidAppsLifeTime';
 
 const androidAppStyles = new AndroidAppStyles();
@@ -31,7 +32,7 @@ import {
 
 const UsageStats = NativeModules.UsageStats;
 
-const db = SQLite.openDatabase({ name: 'usageStatesDb.db' });
+const db = SQLite.openDatabase({ name: 'usageStatesResearchDb.db' });
 
 // const dtb = Storage.open('usageStatesDb.db');
 
@@ -70,7 +71,7 @@ export default class AndroidApp extends Component {
       actualComponent: 0,
       stats: [],
       durationInDays: 7,
-      isFetching: false,
+      isFetching: true,
       isDateTimePickerVisible: false,
       selectedDate: moment().tz('America/Cuiaba').format('DD/MM/YYYY'),
       apiLevel: DeviceInfo.getAPILevel(),
@@ -99,7 +100,8 @@ export default class AndroidApp extends Component {
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width
       },
-      styles: androidAppStyles.index()
+      styles: androidAppStyles.index(),
+      logged: true
     };
 
     DeviceInfo.isAirPlaneMode().then(airPlaneModeOn => {
@@ -118,25 +120,25 @@ export default class AndroidApp extends Component {
       this.setState({ connectionInfo });
     });
 
+    sqLiteAndroid.createTableIfNotExists();
+    
+    sqLiteAndroid.vefiryIfUserIsLogged(logged => {
+      this.setState({ isFetching: false });
+      this.setState({ logged })
+    });
+
     this.getStats();
   };
 
   verifyIfOpen = async (apps, callback) => {
     console.log('iniciou')
-    // sqLiteAndroid.createTableIfNotExists();
+    sqLiteAndroid.createTableIfNotExists();
     // sqLiteAndroid.insertFirstApps(apps);
     await this.selectAppsOrderLastUsage((lastOpenedApps) => {
       if (lastOpenedApps && lastOpenedApps.length) {
         _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
-          // console.log('lastOpenedApp', lastOpenedApp);
           _.forEach(apps, function (app, appKey) {
             if((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
-              console.log('sim');
-              console.log(app.packageName);
-              console.log(lastOpenedApp.usageInThisSession);
-              console.log(lastOpenedApp.id);
-              console.log(lastOpenedApp.usageTime);
-              console.log(app.usageTime);
               lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
               sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
                 sqLiteAndroid.insertAppLast(app, app => {
@@ -146,10 +148,8 @@ export default class AndroidApp extends Component {
             }
           });
         });
-        console.log('terminou');
         callback(lastOpenedApps);
       } else {
-        console.log('else');
         sqLiteAndroid.insertFirstApps((apps), apps => {
           callback(apps);
         });
@@ -287,35 +287,45 @@ export default class AndroidApp extends Component {
     this.setState({ styles: androidAppStyles.index() });
   }
 
+  _handleLoggedUser() {
+    if (!this.state.isFetching) {
+      if (this.state.logged) {
+        return (
+          <View
+            style={this.state.styles.container}
+            onLayout={this.onLayout.bind(this)}>
+            <StatusBar backgroundColor="#145cc7" barStyle="light-content" />
+            <View style={this.state.styles.usageDiaryContainer}>
+              <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
+              <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
+            </View>
+            <View style={this.state.styles.body}>
+              <View style={this.state.styles.buttonsContainer}>
+                <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
+                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
+                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setActualComponent(4)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={this.state.styles.bodyContainer}>
+                {this.renderComponent()}
+              </View>
+            </View>
+          </View>
+          );
+      } else
+        return (<AndroidLogin/>);
+    } else {
+      return(<View></View>)
+    }
+  }
+
   render() {
-    return (
-      <View
-        style={this.state.styles.container}
-        onLayout={this.onLayout.bind(this)}
-      >
-        <StatusBar backgroundColor="#145cc7" barStyle="light-content" />
-        <View style={this.state.styles.usageDiaryContainer}>
-          <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
-          <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
-        </View>
-        <View style={this.state.styles.body}>
-          <View style={this.state.styles.buttonsContainer}>
-            <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
-              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
-              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setActualComponent(4)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
-              <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={this.state.styles.bodyContainer}>
-            {this.renderComponent()}
-          </View>
-        </View>
-      </View>
-    );
+    return (this._handleLoggedUser())
   }
 }
 
