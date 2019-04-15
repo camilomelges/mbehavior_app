@@ -13,8 +13,7 @@ import {
   View,
   Modal,
   ImageBackground,
-  TouchableOpacity,
-  ScrollView
+  TouchableOpacity
 } from 'react-native';
 
 export default class AndroidPrizes extends Component {
@@ -94,8 +93,8 @@ export default class AndroidPrizes extends Component {
                   onRequestClose={() => { this.setModalVisible(item.id, false); }}>
                   {trophyIcon45 ?
                     <ImageBackground source={trophyIcon45}
-                      style={{ width: '100%', height: '100%' }}
-                      imageStyle={{ resizeMode: 'repeat', overflow: 'visible', backfaceVisibility: 'visible', flex: 1, backgroundColor: '#009fff' }}>
+                      style={{ width: '100%', height: '100%'}}
+                      imageStyle={{ resizeMode: 'repeat', backgroundColor: '#009fff' }}>
                       <TrophyModalContent item={item}/>
                     </ImageBackground>
                     : null}

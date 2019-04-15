@@ -56,14 +56,12 @@ export default class AndroidAppStyles {
             },
             body: {
                 flex: 7,
-                backgroundColor: '#FFF'
             },
             bodyContainer: {
                 flex: 1,
                 paddingTop: 15,
                 paddingLeft: '5%',
                 paddingRight: '5%',
-                backgroundColor: '#FFF',
                 paddingBottom: 15
             },
             footerCalendar: {
@@ -124,7 +122,6 @@ export default class AndroidAppStyles {
             },
             notificationsContainerList: {
                 flex: 2,
-                backgroundColor: '#FFF',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
@@ -133,12 +130,12 @@ export default class AndroidAppStyles {
             },
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fff',
+                backgroundColor: '#009fffdb',
                 borderRadius: 8,
                 paddingLeft: '5%',
                 paddingRight: '5%',
                 borderWidth: 1,
-                borderColor: '#009fff',
+                borderColor: '#009fffdb',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -153,10 +150,10 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fff',
+                backgroundColor: '#009fffdb',
                 borderRadius: 8,
                 borderWidth: 1,
-                borderColor: '#009fff',
+                borderColor: '#009fffdb',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -169,7 +166,6 @@ export default class AndroidAppStyles {
             },
             notificationsContainerList: {
                 flex: 1,
-                backgroundColor: '#009fff',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
@@ -227,10 +223,10 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fff',
+                backgroundColor: '#009fffdb',
                 borderRadius: 8,
                 borderWidth: 1,
-                borderColor: '#009fff',
+                borderColor: '#009fffdb',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -243,7 +239,6 @@ export default class AndroidAppStyles {
             },
             notificationsContainerList: {
                 flex: 1,
-                backgroundColor: '#009fff',
                 paddingBottom: 10,
                 paddingLeft: '5%',
                 paddingRight: '5%',
@@ -266,13 +261,13 @@ export default class AndroidAppStyles {
                 flex: 1, paddingTop: 15, paddingLeft: '3%', paddingRight: '3%',
             },
             notificationsModalContainerHeader: {
-                paddingLeft: '13%', paddingTop: 20, paddingRight: '13%', alignItems: 'center'
+                paddingLeft: '8%', paddingTop: 20, paddingRight: '8%', alignItems: 'center'
             },
             notificationsModalContainerHeaderIcon: {
                 justifyContent: 'center', width: 150,  backgroundColor: '#009fff', height: 150, borderColor: '#FFF', borderWidth: 2, borderRadius: 8
             },
             notificationsModalContainerBody: {
-                marginTop: 50, textAlignVertical: "center", textAlign: "center", paddingTop: '5%', paddingLeft: '5%', paddingRight: '5%', backgroundColor: '#008c40', borderRadius: 8, minHeight: '55%', maxHeight: '55%', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 1, elevation: 4
+                marginTop: 50, textAlignVertical: "center", textAlign: "center", paddingTop: '5%', paddingLeft: '5%', paddingRight: '5%', backgroundColor: '#008c40d6', borderRadius: 8, minHeight: '70%', maxHeight: '70%', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 1, elevation: 4
             },
             notificationsContainerListItemIcon: {
                 height: 40,

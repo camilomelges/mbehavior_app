@@ -37,11 +37,11 @@ export default class TrophyModalContent extends Component {
             <View style={this.state.styles.notificationsModalContainer}>
                 <View style={this.state.styles.notificationsModalContainerHeader}>
                     <View style={this.state.styles.notificationsModalContainerHeaderIcon}>
-                        <FontAwesome5 style={{ fontSize: 100, color: '#FFF', textAlign: 'center', fontWeight: 'bold' }} solid name={'trophy'} />
+                        <FontAwesome5 style={{ fontSize: 100, color: '#FFD700', textAlign: 'center', fontWeight: 'bold' }} solid name={'trophy'} />
                     </View>
                     <View style={this.state.styles.notificationsModalContainerBody}>
                         {/* <View> */}
-                        <ScrollView style={{ borderColor: '#FFF', padding: '5%', borderWidth: 1, borderRadius: 8, minHeight: '100%', backgroundColor: '#00af50', maxHeight: '100%' }}>
+                        <ScrollView style={{ borderColor: '#FFF', padding: '5%', borderWidth: 1, borderRadius: 8, minHeight: '100%', backgroundColor: '#c7a800', maxHeight: '100%' }}>
                             <Text style={{ fontSize: 22, color: '#FFF', textAlign: 'center', fontFamily: 'Merriweather Sans' }}>{`${this.props.item.name}\n`}</Text>
                             <Text style={{ fontSize: 18, color: '#FFF', textAlign: 'center', fontFamily: 'Merriweather Sans' }}>{this.props.item.description}</Text>
                         </ScrollView>

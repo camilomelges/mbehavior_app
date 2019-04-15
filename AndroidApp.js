@@ -3,7 +3,6 @@ import moment from 'moment';
 import tx from 'moment-timezone';
 import BackgroundTask from 'react-native-background-task';
 import SQLite from 'react-native-sqlite-storage';
-import Storage from 'react-native-storage';
 import DeviceInfo from 'react-native-device-info';
 import SqLiteAndroid from './android-src/SqLiteAndroid';
 import _ from 'lodash';
@@ -13,6 +12,7 @@ import AndroidPrizes from './android-src/AndroidPrizes';
 import AndroidMyData from './android-src/ResearchData';
 import AndroidLogin from './android-src/AndroidLogin';
 import AndroidAppsLifeTime from './android-src/AndroidAppsLifeTime';
+import unbImage from './assets/images/unb.jpg';
 
 const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
@@ -23,6 +23,7 @@ import {
   View,
   StatusBar,
   Alert,
+  ImageBackground,
   TouchableOpacity,
   NativeModules,
   NetInfo,
@@ -299,7 +300,12 @@ export default class AndroidApp extends Component {
               <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
               <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
             </View>
-            <View style={this.state.styles.body}>
+            {
+                unbImage ?
+                <ImageBackground source={unbImage}
+                  style={{ width: '100%', flex: 7}}
+                  imageStyle={{ resizeMode: 'cover', backgroundColor: '#009fff' }}>
+               <View style={this.state.styles.body}>
               <View style={this.state.styles.buttonsContainer}>
                 <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
                   <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
@@ -307,7 +313,7 @@ export default class AndroidApp extends Component {
                 <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
                   <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setActualComponent(4)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+                <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
                   <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
                 </TouchableOpacity>
               </View>
@@ -315,6 +321,9 @@ export default class AndroidApp extends Component {
                 {this.renderComponent()}
               </View>
             </View>
+                </ImageBackground>
+                : null
+              }
           </View>
           );
       } else
