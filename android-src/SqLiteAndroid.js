@@ -14,10 +14,6 @@ export default class SqLiteAndroid {
       //   'DROP TABLE IF EXISTS user;',
       //   []
       // );
-      // tx.executeSql(
-      //   'DROP TABLE IF EXISTS users;',
-      //   []
-      // );
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT)',
         []
@@ -67,6 +63,7 @@ export default class SqLiteAndroid {
     db.transaction((tx) => {
       console.log('insertUser', email);
       tx.executeSql(`INSERT INTO user (login) VALUES ("${email}")`, [], function (txn, data) {
+        console.log('email', email);
         return callback(email);
       });
     });

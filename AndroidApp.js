@@ -122,8 +122,9 @@ export default class AndroidApp extends Component {
     });
 
     sqLiteAndroid.createTableIfNotExists();
-    
+
     sqLiteAndroid.vefiryIfUserIsLogged(logged => {
+      console.log('logged', logged);
       this.setState({ isFetching: false });
       this.setState({ logged })
     });
@@ -139,7 +140,7 @@ export default class AndroidApp extends Component {
       if (lastOpenedApps && lastOpenedApps.length) {
         _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
           _.forEach(apps, function (app, appKey) {
-            if((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
+            if ((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
               lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
               sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
                 sqLiteAndroid.insertAppLast(app, app => {
@@ -195,14 +196,14 @@ export default class AndroidApp extends Component {
       tx.executeSql(`
         SELECT * from apps WHERE last = 1
       `, [], function (tx, data) {
-        console.log('3')
-        _.forEach(data.rows, function (table, key) {
-          lastOpenedApps.push(data.rows.item(key));
+          console.log('3')
+          _.forEach(data.rows, function (table, key) {
+            lastOpenedApps.push(data.rows.item(key));
+          });
+          console.log('4')
+          console.log('5')
+          callback(lastOpenedApps);
         });
-        console.log('4')
-        console.log('5')
-        callback(lastOpenedApps);
-      });
     });
   }
 
@@ -301,35 +302,35 @@ export default class AndroidApp extends Component {
               <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
             </View>
             {
-                unbImage ?
+              unbImage ?
                 <ImageBackground source={unbImage}
-                  style={{ width: '100%', flex: 7}}
+                  style={{ width: '100%', flex: 7 }}
                   imageStyle={{ resizeMode: 'cover', backgroundColor: '#009fff' }}>
-               <View style={this.state.styles.body}>
-              <View style={this.state.styles.buttonsContainer}>
-                <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
-                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
-                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
-                  <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={this.state.styles.bodyContainer}>
-                {this.renderComponent()}
-              </View>
-            </View>
+                  <View style={this.state.styles.body}>
+                    <View style={this.state.styles.buttonsContainer}>
+                      <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
+                        <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
+                        <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
+                        <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={this.state.styles.bodyContainer}>
+                      {this.renderComponent()}
+                    </View>
+                  </View>
                 </ImageBackground>
                 : null
-              }
+            }
           </View>
-          );
+        );
       } else
-        return (<AndroidLogin/>);
+        return (<AndroidLogin />);
     } else {
-      return(<View></View>)
+      return (<View></View>)
     }
   }
 
