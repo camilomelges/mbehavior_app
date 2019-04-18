@@ -5,6 +5,7 @@ import com.research_usage_statistics.packages.*;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
         new SQLitePluginPackage(),
         new MainReactPackage(),
+            new RNGestureHandlerPackage(),
         new RNDeviceInfo(),
         new BackgroundTaskPackage(),
         new VectorIconsPackage(),
