@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AndroidAppStyles from './AndroidAppStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AndroidRegisterForm from './AndroidRegisterForm';
 
 const androidAppStyles = new AndroidAppStyles();
 
@@ -28,11 +29,7 @@ export default class AndroidRegister extends Component {
   }
 
   render() {
-    return (
-        <View onLayout={this.onLayout.bind(this)}>
-            <Text>Register</Text>
-        </View>
-    );
+    return (<AndroidRegisterForm/>);
   }
 }
 

@@ -9,7 +9,6 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.androidinstalledapps.RNAndroidInstalledAppsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,7 +35,6 @@ public class MainApplication extends Application implements ReactApplication {
         new RNDeviceInfo(),
         new BackgroundTaskPackage(),
         new VectorIconsPackage(),
-        new RNAndroidInstalledAppsPackage(),
         new ModulesPackage()
       );
     }

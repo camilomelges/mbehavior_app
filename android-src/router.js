@@ -1,22 +1,24 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import AndroidLogin from './AndroidLogin';
+import AndroidRegister from './AndroidRegister';
+import AndroidForgotPassword from './AndroidForgotPassword';
 
 const LoginRoutes = createStackNavigator({
   Login: {
-    screen: AndroidLogin
+    screen: AndroidLogin,
   },
   Register: {
-      screen: AndroidLogin
+      screen: AndroidRegister,
   },
   ForgotPassword: {
-    screen: AndroidLogin
+    screen: AndroidForgotPassword
   }
 },{
     initialRouteName: 'Login',
-    headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
-    }
+    // headerMode: 'none',
+    // navigationOptions: {
+      // headerVisible: false,
+    // }
 });
 
 const LoginNavigation = createAppContainer(LoginRoutes);
