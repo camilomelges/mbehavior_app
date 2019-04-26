@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import api from '../config/api';
+import { api } from '../config/api';
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -106,7 +106,7 @@ export default class AndroidRegisterForm extends Component {
       imLiving: 'alone'
     }
 
-    console.log(api);
+    console.log('api', api);
   };
 
   changeSelect = (type, value) => {    
