@@ -4851,7 +4851,7 @@ prompts@^0.1.9:
     kleur "^2.0.1"
     sisteransi "^0.1.1"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5031,12 +5031,12 @@ react-native-image-view@^2.1.2:
   resolved "https://registry.yarnpkg.com/react-native-image-view/-/react-native-image-view-2.1.4.tgz#47faa6c42588e7509f530561a53d3b13eaa5e9bc"
   integrity sha512-V9nKJ9voZgKVaB6IzLpl9WJ+g1j/CrrWG+x/XtEjjxYQK5yi1pTUcybkoNRXpxF7K8ZnGqR2Dp4VdEKPt5qJlA==
 
-react-native-modal-datetime-picker@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-6.1.0.tgz#246563ed582e68a886134ba1e2a3226504590819"
-  integrity sha512-QIhWcaUli+KpezHJhBfeH2x3E1yBcn8R44ZHsGb6598v+k2rV6JB/Kvn9CDFRFDbr7nsTnsHMqz5eUMxiTXNdQ==
+react-native-modal-datetime-picker@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-7.4.0.tgz#29c8a51cf4ca79c71c723551e3bbc788d11df3db"
+  integrity sha512-lq39cVE2MYktv0usF0k/EwW0gyIvERiYFT9yDXmHIhJFihnR0ZV1kK1Pni4pfLNuqWIWbkb5Y3kzpSKcMzdXSA==
   dependencies:
-    prop-types "^15.6.2"
+    prop-types "^15.7.2"
     react-native-modal "^9.0.0"
 
 react-native-modal@^9.0.0:
