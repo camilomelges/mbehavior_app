@@ -1,43 +1,38 @@
 import React, { Component } from 'react';
-import { LoginNavigation } from "./android-src/router";
+import AndroidInitialPage from './android-src/AndroidInitialPage';
+import { LoginNavigation, HomeNavigation } from './android-src/router';
+import { AppRegistry } from 'react-native';
+import SqLiteAndroid from './android-src/SqLiteAndroid';
 
-import {
-  AppRegistry,
-} from 'react-native';
-
-// const dtb = Storage.open('usageStatesDb.db');
-
-// BackgroundTask.define(async () => {
-//   UsageStats.getAppsToday()
-//     .then(apps => {
-//       verifyIfOpenSchedule(apps);
-//     })
-//     .catch(error => {
-//       alert(error);
-//     });
-//   // Remember to call finish()
-//   BackgroundTask.finish();
-// });
-
-// function verifyIfOpenSchedule(apps) {
-//   this.selectAppsOrderLastUsage();
-//   let lastOpenedApps = this.state.stats;
-//   _.forEach(lastOpenedApps, function (lastOpenedAppKey, lastOpenedApp) {
-//     _.forEach(apps, function (appKey, app) {
-//       if ((app.packageName === lastOpenedApps.packageName) && (app.usageTime != lastOpenedApps.usageTime)) {
-//         lastOpenedApps[lastOpenedAppKey].usageInThisSession = app.usageTime - lastOpenedApps.usageTime;
-//         sqLiteAndroid.updateLastUsageApp(lastOpenedApps[lastOpenedAppKey]);
-//         sqLiteAndroid.insertAppLast(app);
-//       }
-//     });
-//   });
-// }
+const sqLiteAndroid = new SqLiteAndroid();
 
 export default class AndroidApp extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      logged: false
+    }
+
+    sqLiteAndroid.createTableIfNotExists();
   };
+
+  componentWillMount = () => {
+    this._isMounted = true;
+  }
+
+  componentDidMount = () => {
+    if (this._isMounted) {
+      sqLiteAndroid.vefiryIfUserIsLogged(logged => {
+        this.setState({ logged });
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

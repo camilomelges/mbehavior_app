@@ -26,9 +26,7 @@ export default class AndroidAppsLifeTime extends Component {
       styles: androidAppStyles.prizes()
     };
     sqLiteAndroid.selectAllFromApps((apps) => {
-      console.log('ow');
       this.setState({ stats: apps});
-      console.log(this.state.stats)
     })
   };
 

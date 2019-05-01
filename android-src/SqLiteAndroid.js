@@ -4,22 +4,23 @@ import _ from 'lodash';
 const db = SQLite.openDatabase({ name: 'usageStatesResearchDb.db' });
 
 export default class SqLiteAndroid {
-  createTableIfNotExists() {
+  createTableIfNotExists = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageIcon TEXT, packageName TEXT, usageTime BIGINT UNSIGNED NOT NULL, lastUsageTime BIGINT UNSIGNED NOT NULL, usageInThisSession BIGINT UNSIGNED NOT NULL DEFAULT 0, last BIT NOT NULL DEFAULT 1, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
         []
       );
-      // tx.executeSql(
-      //   'DROP TABLE IF EXISTS user;',
-      //   []
-      // );
+      // this.dropTableUser(tx);
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT)',
         []
       );
     });
   };
+
+  dropTableUser = (tx) => {
+    tx.executeSql('DROP TABLE IF EXISTS user', []);
+  }
 
   selectAllFromApps(callback) {
     db.transaction((tx) => {
@@ -47,10 +48,6 @@ export default class SqLiteAndroid {
   vefiryIfUserIsLogged(callback) {
     db.transaction((tx) => {
       tx.executeSql(`SELECT * FROM user`, [], function (txn, data) {
-        console.log('verify user', data.rows.length);
-        _.forEach(data.rows, function (app, key) {
-          console.log(data.rows.item(key));
-        });
         if (data.rows.length > 0)
           return callback(true);
         else
@@ -61,16 +58,13 @@ export default class SqLiteAndroid {
 
   insertUser = async (email, callback) => {
     db.transaction((tx) => {
-      console.log('insertUser', email);
       tx.executeSql(`INSERT INTO user (login) VALUES ("${email}")`, [], function (txn, data) {
-        console.log('email', email);
         return callback(email);
       });
     });
   }
 
   insertFirstApps = async (apps, callback) => {
-    console.log('insertFirstApps')
     _.forEach(apps, function (app, appKey) {
       db.transaction((tx) => {
         tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime, lastUsageTime, usageInThisSession) VALUES (

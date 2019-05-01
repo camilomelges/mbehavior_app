@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import AndroidAppStyles from './AndroidAppStyles';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AndroidRegisterForm from './AndroidRegisterForm';
 
 const androidAppStyles = new AndroidAppStyles();
-
-import {
-    Text,
-    View
-} from 'react-native';
 
 export default class AndroidRegister extends Component {
 
@@ -29,7 +23,7 @@ export default class AndroidRegister extends Component {
   }
 
   render() {
-    return (<AndroidRegisterForm/>);
+    return (<AndroidRegisterForm navigation={this.props.navigation}/>);
   }
 }
 

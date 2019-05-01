@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import SqLiteAndroid from './SqLiteAndroid';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import DeviceInfo from 'react-native-device-info';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { api } from '../config/api';
 import {
   SafeAreaView,
   TextInput,
@@ -16,9 +20,8 @@ import {
   NetInfo,
   Keyboard
 } from 'react-native';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { api } from '../config/api';
+
+const sqLiteAndroid = new SqLiteAndroid();
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -131,7 +134,7 @@ export default class AndroidRegisterForm extends Component {
       isEmulator: DeviceInfo.isEmulator(),
       isTablet: DeviceInfo.isTablet(),
       deviceType: DeviceInfo.getDeviceType(),
-      full_metal_app_token: 'NãoTemComoAdivinharEsseToken',
+      full_metal_app_token: 'NãoTemComoAdivinharEsseTokenÇç',
       connectionInfo: {
         type: '',
         effectiveType: ''
@@ -143,8 +146,6 @@ export default class AndroidRegisterForm extends Component {
     NetInfo.getConnectionInfo().then((connectionInfo) => {
       this.setState({ connectionInfo });
     });
-
-    console.log('api', api);
   };
 
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -194,23 +195,31 @@ export default class AndroidRegisterForm extends Component {
   }
 
    userRegister = async (registerData) => {
-    return fetch('http://10.0.3.2:8765/users/register-api-app.json', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: registerData
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      if (!responseJson.ok) {
-        console.log(this.state.birthdate);
-        Alert.alert(responseJson.message);
-      }
-    })
-    .catch((error) => {
-      alert(error);
+    NetInfo.isConnected.fetch().done((isConnected) => {
+      if (!isConnected) 
+        return Alert.alert('Você não possuí conecção com a internet!');
+
+      return fetch(`${api.url}/users/register-api-app.json`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: registerData
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (!responseJson.ok && !responseJson.user)
+          return Alert.alert(responseJson.message);
+
+        sqLiteAndroid.insertUser(responseJson.user.email, login => {
+          const { navigate } = this.props.navigation;
+          navigate('HomeRoutes');
+        });
+      })
+      .catch((error) => {
+        alert(error);
+      });
     });
   }
 
