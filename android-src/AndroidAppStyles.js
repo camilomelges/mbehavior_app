@@ -264,7 +264,7 @@ export default class AndroidAppStyles {
                 paddingLeft: '8%', paddingTop: 20, paddingRight: '8%', alignItems: 'center'
             },
             notificationsModalContainerHeaderIcon: {
-                justifyContent: 'center', width: 150,  backgroundColor: '#009fff', height: 150, borderColor: '#FFF', borderWidth: 2, borderRadius: 8
+                justifyContent: 'center', width: 150,  backgroundColor: '#009fff', height: 150, borderColor: '#FFF', borderWidth: 2, borderRadius: 8, shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 1, shadowRadius: 1, elevation: 4
             },
             notificationsModalContainerBody: {
                 marginTop: 50, textAlignVertical: "center", textAlign: "center", paddingTop: '5%', paddingLeft: '5%', paddingRight: '5%', backgroundColor: '#008c40d6', borderRadius: 8, minHeight: '70%', maxHeight: '70%', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 1, shadowRadius: 1, elevation: 4
