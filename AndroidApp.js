@@ -29,7 +29,7 @@ export default class AndroidApp extends Component {
     if (this._isMounted) {
       setTimeout(async () => {
         await androiPermissions.fineLocationPermission();
-      }, 5000);
+      }, 10000);
       await this.backgroundFecth();
       sqLiteAndroid.vefiryIfUserIsLogged(logged => {
         this.setState({ logged });

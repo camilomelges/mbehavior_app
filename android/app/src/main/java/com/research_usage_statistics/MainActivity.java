@@ -31,6 +31,9 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
 import com.research_usage_statistics.services.LocationService;
+import java.lang.Thread;
+import android.support.v4.content.ContextCompat;
+import android.support.v13.app.ActivityCompat;
 
 public class MainActivity extends ReactActivity {
 
@@ -51,15 +54,16 @@ public class MainActivity extends ReactActivity {
     LocationListener listener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-          Intent myIntent = new Intent(getApplicationContext(), LocationService.class);
-    
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getApplicationContext().startForegroundService(myIntent);
-          } else {
-            getApplicationContext().startService(myIntent);
-          }
-    
-          HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
+
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Intent myIntent = new Intent(getApplicationContext(), LocationService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                  getApplicationContext().startForegroundService(myIntent);
+                } else {
+                  getApplicationContext().startService(myIntent);
+                }
+                HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
+            }
         }
     
         @Override
@@ -79,16 +83,10 @@ public class MainActivity extends ReactActivity {
     protected void onStart() {
         super.onStart();
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Log.d("ReactNative", "sim");
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            // Start requesting for location
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, listener);
-        }
+        //TODO while
 
-        Intent myIntent = new Intent(getApplicationContext(), LaunchAppService.class);
-        getApplicationContext().startService(myIntent);
+        Intent LaunchAppServiceIntent = new Intent(getApplicationContext(), LaunchAppService.class);
+        getApplicationContext().startService(LaunchAppServiceIntent);
         HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
 
         if (UsageStatsModule.getUsageStatsList(this).isEmpty()) {
@@ -102,5 +100,25 @@ public class MainActivity extends ReactActivity {
             });
             alertDialog.show();
         }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            // Start requesting for location
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, listener);
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            // Start requesting for location
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, listener);
+
+        }
+        return;
     }
 }
