@@ -137,13 +137,18 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-background-fetch')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-device-info')
-    implementation project(':react-native-background-task')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-sqlite-storage')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.android.support:support-v4:+';
+    implementation 'com.android.support:support-v13:+';
+    implementation 'com.android.support:recyclerview-v7:+';
+    implementation 'com.rvalerio:fgchecker:1.1.0';
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation 'com.android.support:support-media-compat:26.+'
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-device-info')
 }

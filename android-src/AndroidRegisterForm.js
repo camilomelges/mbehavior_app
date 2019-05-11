@@ -134,7 +134,7 @@ export default class AndroidRegisterForm extends Component {
       isEmulator: DeviceInfo.isEmulator(),
       isTablet: DeviceInfo.isTablet(),
       deviceType: DeviceInfo.getDeviceType(),
-      full_metal_app_token: 'NãoTemComoAdivinharEsseTokenÇç',
+      full_metal_app_token: api.full_metal_app_token,
       connectionInfo: {
         type: '',
         effectiveType: ''

@@ -38,18 +38,6 @@ export default class TrophyModalContent extends Component {
     };
   };
 
-  // setModalVisible(id, visible) {
-  //     this.setState({
-  //         stats: update(
-  //             this.props.item, {
-  //                 [id]: {
-  //                     modalVisible: { $set: visible }
-  //                 }
-  //             }
-  //         )
-  //     })
-  // }
-
   render() {
     return (
       <View style={this.state.styles.notificationsModalContainer}>

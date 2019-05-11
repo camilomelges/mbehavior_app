@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import tx from 'moment-timezone';
-import BackgroundTask from 'react-native-background-task';
 import SQLite from 'react-native-sqlite-storage';
 import SqLiteAndroid from './SqLiteAndroid';
 import _ from 'lodash';
@@ -16,7 +15,6 @@ const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
 
 import {
-  AppRegistry,
   Text,
   View,
   StatusBar,
@@ -24,8 +22,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   NativeModules,
-  NetInfo,
-  Dimensions,
+  ActivityIndicator,
   ScrollView
 } from 'react-native';
 
@@ -77,86 +74,66 @@ export default class AndroidInitialPage extends Component {
       logged: false
     };
 
-    this.getStats();
+    // this.getStats();
   };
 
-  verifyIfOpen = async (apps, callback) => {
-    // sqLiteAndroid.insertFirstApps(apps);
-    await this.selectAppsOrderLastUsage((lastOpenedApps) => {
-      if (lastOpenedApps && lastOpenedApps.length) {
-        _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
-          _.forEach(apps, function (app, appKey) {
-            if ((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
-              lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
-              sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
-                sqLiteAndroid.insertAppLast(app, app => {
-                  return callback(app);
-                });
-              });
-            }
-          });
-        });
-        callback(lastOpenedApps);
-      } else {
-        sqLiteAndroid.insertFirstApps((apps), apps => {
-          callback(apps);
-        });
-      }
-    });
-  }
+  // verifyIfOpen = async (apps, callback) => {
+  //   // sqLiteAndroid.insertFirstApps(apps);
+  //   await this.selectAppsOrderLastUsage((lastOpenedApps) => {
+  //     if (lastOpenedApps && lastOpenedApps.length) {
+  //       _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
+  //         _.forEach(apps, function (app, appKey) {
+  //           if ((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
+  //             lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
+  //             sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
+  //               sqLiteAndroid.insertAppLast(app, app => {
+  //                 return callback(app);
+  //               });
+  //             });
+  //           }
+  //         });
+  //       });
+  //       callback(lastOpenedApps);
+  //     } else {
+  //       sqLiteAndroid.insertFirstApps((apps), apps => {
+  //         callback(apps);
+  //       });
+  //     }
+  //   });
+  // }
 
   componentDidMount() {
-    BackgroundTask.schedule({
-      period: 900, // Aim to run every 15 min - more conservative on battery
-    });
-
-    // Optional: Check if the device is blocking background tasks or not
-    this.checkStatus();
-  }
-
-  checkStatus = async () => {
-    const status = await BackgroundTask.statusAsync();
-
-    if (status.available) {
-      return;
-    }
-
-    const reason = status.unavailableReason
-    if (reason === BackgroundTask.UNAVAILABLE_DENIED) {
-      Alert.alert('Negado', 'Please enable background "Background App Refresh" for this app');
-    } else if (reason === BackgroundTask.UNAVAILABLE_RESTRICTED) {
-      Alert.alert('Restricted', 'Background tasks are restricted on your device');
-    }
+    this.setState({ isFetching: false });
   }
 
   onRefresh() {
     this.setState({ isFetching: true }, function () { this.getStats() });
   }
 
-  selectAppsOrderLastUsage = async (callback) => {
-    db.transaction((tx) => {
-      let lastOpenedApps = [];
-      tx.executeSql(`SELECT * from apps WHERE last = 1`, [], function (tx, data) {
-        _.forEach(data.rows, function (table, key) {
-          lastOpenedApps.push(data.rows.item(key));
-        });
-        callback(lastOpenedApps);
-      });
-    });
-  }
+  // selectAppsOrderLastUsage = async (callback) => {
+  //   db.transaction((tx) => {
+  //     let lastOpenedApps = [];
+  //     tx.executeSql(`SELECT * from apps WHERE last = 1`, [], function (tx, data) {
+  //       _.forEach(data.rows, function (table, key) {
+  //         lastOpenedApps.push(data.rows.item(key));
+  //       });
+  //       callback(lastOpenedApps);
+  //     });
+  //   });
+  // }
 
-  getStats() {
-    UsageStats.getAppsToday()
-      .then(apps => {
-        this.verifyIfOpen(apps, () => {
-          // this.selectAppsOrderLastUsage();
-          this.setState({ isFetching: false });
-        });
-      })
-      .catch(error => {
-        alert(error);
-      });
-  }
+  // getStats() {
+  //   UsageStats.getAppsToday()
+  //     .then(apps => {
+  //       this.verifyIfOpen(apps, () => {
+  //         // this.selectAppsOrderLastUsage();
+  //         this.setState({ isFetching: false });
+  //       });
+  //     })
+  //     .catch(error => {
+  //       alert(error);
+  //     });
+  // }
 
   setActualComponent(actualComponent) {
     this.setState({ actualComponent });
@@ -245,11 +222,65 @@ export default class AndroidInitialPage extends Component {
         </View>
       );
     } else {
-      return (<View />)
+      return (<View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator size={100} color="#0000ff" /></View>)
     }
   }
 
   render() {
     return (this._handleLoggedUser());
   }
+}
+
+// BackgroundTask.define(async () => {
+//   console.log('INICIOU O SCHEDULE');
+//   UsageStats.getAppsToday()
+//     .then(apps => {
+//       console.log('INICIOU verifyIfOpenSchedule');
+//       verifyIfOpenSchedule(apps);
+//     })
+//     .catch(error => {
+//       alert(error);
+//     });
+//   // Remember to call finish()
+//   BackgroundTask.finish();
+//   console.log('BACKGROUND TASK FINISH');
+// });
+
+
+function selectAppsOrderLastUsage (callback) {
+  db.transaction((tx) => {
+    let lastOpenedApps = [];
+    tx.executeSql(`SELECT * from apps WHERE last = 1`, [], function (tx, data) {
+      _.forEach(data.rows, function (table, key) {
+        lastOpenedApps.push(data.rows.item(key));
+      });
+      callback(lastOpenedApps);
+    });
+  });
+}
+
+function verifyIfOpenSchedule (apps, callback) {
+  // sqLiteAndroid.insertFirstApps(apps);
+  selectAppsOrderLastUsage((lastOpenedApps) => {
+    if (lastOpenedApps && lastOpenedApps.length) {
+      _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
+        _.forEach(apps, function (app, appKey) {
+          if ((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
+            lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
+            sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
+              sqLiteAndroid.insertAppLast(app, app => {
+                console.log('FINALIZOU verifyIfOpenSchedule');
+                return callback(app);
+              });
+            });
+          }
+        });
+      });
+      callback(lastOpenedApps);
+    } else {
+      sqLiteAndroid.insertFirstApps((apps), apps => {
+        callback(apps);
+      });
+    }
+  });
 }

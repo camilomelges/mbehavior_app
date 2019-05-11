@@ -44,8 +44,7 @@ export default class SqLiteAndroid {
       });
     })
   }
-
-  vefiryIfUserIsLogged(callback) {
+  vefiryIfUserIsLogged = (callback) => {
     db.transaction((tx) => {
       tx.executeSql(`SELECT * FROM user`, [], function (txn, data) {
         if (data.rows.length > 0)

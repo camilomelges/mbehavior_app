@@ -9,6 +9,7 @@ import {
   Button,
   TextInput,
   View,
+  ActivityIndicator,
   StatusBar,
   NetInfo,
   StyleSheet,
@@ -27,7 +28,7 @@ export default class AndroidLogin extends Component {
     this.state = {
       email: 'teste@teste.com',
       password: 'testee',
-      logged: false,
+      logged: null,
       alert: {
         show: false,
         showProgress: false,
@@ -83,7 +84,7 @@ export default class AndroidLogin extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password, full_metal_app_token: 'NãoTemComoAdivinharEsseTokenÇç' })
+        body: JSON.stringify({ email, password, full_metal_app_token: api.full_metal_app_token })
       })
       .then((response) => response.json())
       .then((responseJson) => {
@@ -133,10 +134,13 @@ export default class AndroidLogin extends Component {
     alert.show = false;
     this.setState({ alert });
   };
-  
-  render() {
-    return (
-      <View style={styles.container}>
+
+  renderComponent = () => {
+    if (!this._isMounted || this.state.logged == null) {
+      return (<View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator size={100} color="#0000ff" /></View>);
+    } else {
+      return(
+        <View style={styles.container}>
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         {
           unbImage ?
@@ -210,7 +214,12 @@ export default class AndroidLogin extends Component {
         contentContainerStyle={{width: '100%', justifyContent: 'center'}}
       />
       </View>
-    );
+      );
+    }
+  }
+  
+  render = () => {
+    return (this.renderComponent());
   }
 }
 

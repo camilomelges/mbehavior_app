@@ -7,9 +7,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission
-      android:name="android.permission.PACKAGE_USAGE_STATS"
-      tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
 
 
     <uses-sdk
@@ -19,6 +23,7 @@
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       tools:replace="android:icon,android:allowBackup"
       android:theme="@style/AppTheme">
@@ -32,6 +37,28 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+      <service android:name="com.research_usage_statistics.services.ForegroundAppService" />
+
+      
+      <service android:name="com.research_usage_statistics.services.LocationService" />
+      <service android:name="com.research_usage_statistics.services.LaunchAppService" />
+      <receiver android:name="com.research_usage_statistics.receiver.LaunchAppReceiver">
+          <intent-filter android:priority="1000">
+            <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+            <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            <action android:name="android.intent.action.LOCALE_CHANGED" />
+            <action android:name="YouWillNeverKillMe" />
+          </intent-filter>
+      </receiver>
+      <receiver android:name="com.research_usage_statistics.receiver.LocationReceiver">
+          <intent-filter android:priority="1000">
+            <action android:name="android.intent.action.TIME_TICK" />
+            <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+            <action android:name="YouWillNeverKillMe" />
+          </intent-filter>
+      </receiver>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
