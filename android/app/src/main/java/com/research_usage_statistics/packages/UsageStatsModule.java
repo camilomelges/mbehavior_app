@@ -2,6 +2,8 @@ package com.research_usage_statistics.packages;
 
 import android.widget.Toast;
 
+import com.research_usage_statistics.services.LaunchAppService;
+
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -10,6 +12,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.Arguments;
 
@@ -23,6 +26,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
@@ -69,7 +74,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("M-d-yyyy HH:mm:ss");
   public static final String TAG = UsageStatsModule.class.getSimpleName();
-  
+
   @ReactMethod
   public void getAppsToday(Promise promise) {
     try {
@@ -80,7 +85,8 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
       PackageManager pm = this.reactContext.getPackageManager();
       List<PackageInfo> pList = pm.getInstalledPackages(0);
-      UsageStatsManager manager = (UsageStatsManager) this.reactContext.getSystemService(this.reactContext.USAGE_STATS_SERVICE);
+      UsageStatsManager manager = (UsageStatsManager) this.reactContext
+          .getSystemService(this.reactContext.USAGE_STATS_SERVICE);
       List<UsageStats> stats = manager.queryUsageStats(manager.INTERVAL_DAILY, 1420113600, System.currentTimeMillis());
 
       WritableArray apps = Arguments.createArray();
@@ -89,22 +95,22 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         WritableMap app = Arguments.createMap();
 
         Bitmap bitmap;
-        if(pm.getApplicationIcon(stat.getPackageName()) instanceof BitmapDrawable) { 
+        if (pm.getApplicationIcon(stat.getPackageName()) instanceof BitmapDrawable) {
           bitmap = ((BitmapDrawable) pm.getApplicationIcon(stat.getPackageName())).getBitmap();
         } else {
           bitmap = getBitmapFromDrawable(pm.getApplicationIcon(stat.getPackageName()));
         }
-        
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        
+
         String stringIcon = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-        
+
         // app.putString("packageIcon", stringIcon);
         app.putString("packageIcon", "stringIcon");
-        
+
         ApplicationInfo appInfo = pm.getApplicationInfo(stat.getPackageName(), 0);
-        
+
         // long now = Instant.now().toEpochMilli();
         app.putString("packageName", pm.getApplicationLabel(appInfo).toString());
         app.putDouble("totalActivedTime", stat.getFirstTimeStamp());
@@ -123,8 +129,35 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
+  @ReactMethod
+  public void getActualApp(Promise promise) {
+    try {
+      PackageManager pm = this.reactContext.getPackageManager();
+      LaunchAppService launchAppService = new LaunchAppService();
+
+      UsageStats lastApp = launchAppService.lastApp;
+      UsageStats actualApp = launchAppService.actualApp;
+
+      WritableNativeMap app = new WritableNativeMap();
+
+      Log.d("ReactNative", launchAppService.LauchAppServiceChannel);
+      ApplicationInfo appInfo = pm.getApplicationInfo(launchAppService.lastApp.getPackageName(), 0);
+
+      app.putString("packageName", pm.getApplicationLabel(appInfo).toString());
+      app.putDouble("totalActivedTime", lastApp.getFirstTimeStamp());
+      app.putDouble("initTimeInInterval", lastApp.getFirstTimeStamp());
+      app.putDouble("lastTimeUsed", lastApp.getLastTimeUsed());
+      app.putDouble("usageTime", lastApp.getTotalTimeInForeground()/1000);
+
+      promise.resolve(app);
+    } catch (Exception ex) {
+      promise.reject(ex);
+    }
+  }
+
   private Bitmap getBitmapFromDrawable(Drawable drawable) {
-    final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+    final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+        Bitmap.Config.ARGB_8888);
     final Canvas canvas = new Canvas(bmp);
     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
     drawable.draw(canvas);
@@ -137,7 +170,8 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
       long yesterday = System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000;
       PackageManager pm = this.reactContext.getPackageManager();
       List<PackageInfo> pList = pm.getInstalledPackages(0);
-      UsageStatsManager manager = (UsageStatsManager) this.reactContext.getSystemService(this.reactContext.USAGE_STATS_SERVICE);
+      UsageStatsManager manager = (UsageStatsManager) this.reactContext
+          .getSystemService(this.reactContext.USAGE_STATS_SERVICE);
       List<UsageStats> stats = manager.queryUsageStats(manager.INTERVAL_DAILY, yesterday, System.currentTimeMillis());
 
       WritableArray list = Arguments.createArray();
@@ -162,32 +196,31 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
-  public static List<UsageStats> getUsageStatsList(Context context){
+  public static List<UsageStats> getUsageStatsList(Context context) {
     UsageStatsManager usm = getUsageStatsManager(context);
     Calendar calendar = Calendar.getInstance();
     long endTime = calendar.getTimeInMillis();
     calendar.add(Calendar.YEAR, -1);
     long startTime = calendar.getTimeInMillis();
-    Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
+    Log.d(TAG, "Range start:" + dateFormat.format(startTime));
     Log.d(TAG, "Range end:" + dateFormat.format(endTime));
-    List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
+    List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
     return usageStatsList;
   }
 
-  public static void printCurrentUsageStatus(Context context){
+  public static void printCurrentUsageStatus(Context context) {
     printUsageStats(getUsageStatsList(context));
   }
-    
+
   @SuppressWarnings("ResourceType")
-  private static UsageStatsManager getUsageStatsManager(Context context){
+  private static UsageStatsManager getUsageStatsManager(Context context) {
     UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
     return usm;
   }
 
-  public static void printUsageStats(List<UsageStats> usageStatsList){
-    for (UsageStats u : usageStatsList){
-      Log.d(TAG, "Pkg: " + u.getPackageName() +  "\t" + "ForegroundTime: "
-      + u.getTotalTimeInForeground()) ;
+  public static void printUsageStats(List<UsageStats> usageStatsList) {
+    for (UsageStats u : usageStatsList) {
+      Log.d(TAG, "Pkg: " + u.getPackageName() + "\t" + "ForegroundTime: " + u.getTotalTimeInForeground());
     }
   }
 }

@@ -29,7 +29,7 @@ public class ForegroundAppService extends Service {
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
     Notification ForegroundAppNotification = new NotificationCompat.Builder(this, ForegroundAppChannel)
-        .setContentTitle("Serviço de uso").setContentText(input).setSmallIcon(R.mipmap.ic_launcher)
+        .setContentTitle("Serviço de uso, precisamos disso para a coleta de dados da pesquisa.\nClique aqui e abra o APP.").setContentText(input).setSmallIcon(R.mipmap.ic_launcher)
         .setContentIntent(pendingIntent).build();
 
     startForeground(1, ForegroundAppNotification);

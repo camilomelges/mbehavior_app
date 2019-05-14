@@ -14,34 +14,25 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import org.pgsqlite.SQLitePluginPackage;
-
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v13.app.ActivityCompat;
-
 import java.util.Arrays;
+import android.os.Bundle;
 import java.util.List;
 import android.util.Log;
-
+import android.content.Context;
+import android.content.Intent;
+import com.rvalerio.fgchecker.AppChecker;
+import android.app.NotificationChannel;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.support.v4.app.NotificationCompat;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import com.research_usage_statistics.services.ForegroundAppService;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
 import com.research_usage_statistics.services.LocationService;
-import com.research_usage_statistics.services.LaunchAppService;
-import android.content.Context;
-import android.os.Bundle;
-import android.content.Intent;
-import com.facebook.react.HeadlessJsTaskService;
-import org.json.JSONObject;
-import org.json.JSONException;
-import com.rvalerio.fgchecker.AppChecker;
-import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
-import android.app.ActivityManager;
-import android.support.v4.content.ContextCompat;
-import com.research_usage_statistics.services.ForegroundAppService;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -52,10 +43,17 @@ public class MainApplication extends Application implements ReactApplication {
       NotificationChannel serviceChannel = new NotificationChannel(ForegroundAppChannel, "ForegroundAppChannel",
           NotificationManager.IMPORTANCE_HIGH);
 
+          serviceChannel.setSound(null, null);
+          serviceChannel.setShowBadge(false);
+
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(serviceChannel);
 
       startService();
+    } else {
+      Notification LocationServiceNotification = new NotificationCompat.Builder(this, ForegroundAppChannel).build();
+      startService();
+      NotificationManager manager = getSystemService(NotificationManager.class);
     }
   }
 

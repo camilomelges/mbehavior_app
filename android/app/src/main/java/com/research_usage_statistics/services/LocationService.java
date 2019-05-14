@@ -16,8 +16,10 @@ import android.support.v4.app.NotificationCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.location.LocationManager;
+import android.location.LocationListener;
+import android.location.Location;
 
-//creating the service class
 public class LocationService extends HeadlessJsTaskService {
 
   public static final String LocationServiceChannel = "LocationServiceService";
@@ -25,12 +27,36 @@ public class LocationService extends HeadlessJsTaskService {
   private void createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel serviceChannel = new NotificationChannel(LocationServiceChannel, "LocationServiceChannel",
-          NotificationManager.IMPORTANCE_HIGH);
+          NotificationManager.IMPORTANCE_LOW);
 
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(serviceChannel);
     }
   }
+
+  LocationListener listener = new LocationListener() {
+    @Override
+    public void onLocationChanged(Location location) {
+      Intent LaunchAppServiceIntent = new Intent(getApplicationContext(), LaunchAppService.class);
+      getApplicationContext().startService(LaunchAppServiceIntent);
+      HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+      Intent LaunchAppServiceIntent = new Intent(getApplicationContext(), LaunchAppService.class);
+      getApplicationContext().startService(LaunchAppServiceIntent);
+      HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+    }
+  };
 
   @Override
   public void onCreate() {
@@ -47,7 +73,6 @@ public class LocationService extends HeadlessJsTaskService {
   protected HeadlessJsTaskConfig getTaskConfig(Intent intent) {
 
     Bundle extras = intent.getExtras();
-    return new HeadlessJsTaskConfig("LogLocation", // JS function to call
-        extras != null ? Arguments.fromBundle(extras) : null, 1000, true);
+    return new HeadlessJsTaskConfig("LogLocation", extras != null ? Arguments.fromBundle(extras) : null, 1000, true);
   }
 }

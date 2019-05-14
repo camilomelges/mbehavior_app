@@ -10,6 +10,10 @@ export default class SqLiteAndroid {
         'CREATE TABLE IF NOT EXISTS apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageIcon TEXT, packageName TEXT, usageTime BIGINT UNSIGNED NOT NULL, lastUsageTime BIGINT UNSIGNED NOT NULL, usageInThisSession BIGINT UNSIGNED NOT NULL DEFAULT 0, last BIT NOT NULL DEFAULT 1, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
         []
       );
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS locations(id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp LONG, speed DOUBLE, heading DOUBLE, accuracy DOUBLE, longitude DOUBLE, altitude DOUBLE, latitude DOUBLE, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
+        []
+      );
       // this.dropTableUser(tx);
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT)',
@@ -95,6 +99,18 @@ export default class SqLiteAndroid {
       tx.executeSql(`UPDATE apps SET last = 0, usageInThisSession = ${lastOpenedApp.usageInThisSession} WHERE id = "${lastOpenedApp.id}"`, [], function (txn, data) {
         callback(lastOpenedApp);
       })
+    });
+  }
+
+  insertApp(app) {
+    db.transaction((tx) => {
+      tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime, lastUsageTime, usageInThisSession) VALUES (
+        "${app.packageIcon}", 
+        "${app.packageName}", 
+        "${app.usageTime}", 
+        "${app.lastUsageTime}", 
+        "${app.usageInThisSession}",
+        )`, []);
     });
   }
 

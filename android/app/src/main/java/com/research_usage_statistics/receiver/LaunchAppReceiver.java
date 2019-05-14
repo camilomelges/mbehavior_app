@@ -10,27 +10,19 @@ import com.rvalerio.fgchecker.AppChecker;
 
 public final class LaunchAppReceiver extends BroadcastReceiver {
 
-    private static volatile boolean receiversRegistered = false;
+    public static volatile boolean receiversRegistered = false;
 
     public final void onReceive(Context context, Intent intent) {
-        if (receiversRegistered) return;
-        // ((MainApplication) this.getApplication()).getActualPackage("foo");
-
-        // // get
-        // String s = ((MainApplication) this.getApplication()).setActualPackage();
         Log.d("ReactNative", "LaunchAppReceiver");
-        // Intent myIntent = new Intent(context, LaunchAppService.class);
-        // context.startService(myIntent);
-        HeadlessJsTaskService.acquireWakeLockNow(context);
+        if (receiversRegistered) return;
         receiversRegistered = true;
         
-        AppChecker appChecker = new AppChecker();
-        appChecker.whenAny(new AppChecker.Listener() {
-            @Override
-            public void onForeground(String packageName) {
-                Log.d("ReactNative", packageName);
-            }
-        }).timeout(10000).start(context);
+        Log.d("ReactNative", "LaunchAppReceiver");
+
+        final Context finalContext = context;
+        final Intent LaunchAppServiceIntent = new Intent(finalContext, LaunchAppService.class);
+        finalContext.startService(LaunchAppServiceIntent);
+        HeadlessJsTaskService.acquireWakeLockNow(finalContext);
     }
 
 }

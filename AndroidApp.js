@@ -8,6 +8,8 @@ import BackgroundFetch from "react-native-background-fetch";
 const sqLiteAndroid = new SqLiteAndroid();
 const androiPermissions = new AndroiPermissions();
 
+const UsageStats = NativeModules.UsageStats;
+
 export default class AndroidApp extends Component {
   _isMounted = false;
 
@@ -27,9 +29,6 @@ export default class AndroidApp extends Component {
 
   async componentDidMount() {
     if (this._isMounted) {
-      setTimeout(async () => {
-        await androiPermissions.fineLocationPermission();
-      }, 10000);
       await this.backgroundFecth();
       sqLiteAndroid.vefiryIfUserIsLogged(logged => {
         this.setState({ logged });
@@ -86,12 +85,20 @@ export default class AndroidApp extends Component {
 
 const LogLocation = async (data) => {
   navigator.geolocation.getCurrentPosition((position) => {
-   console.log(position.coords);
+   console.log(position);
   });
 }
 
 const LauchApp = async (data) => {
   console.log('LauchApp');
+  UsageStats.getActualApp()
+    .then(app => {
+      return console.log(app);
+      sqLiteAndroid.insertApp(app);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 AppRegistry.registerHeadlessTask('LogLocation', () => LogLocation);
