@@ -130,12 +130,9 @@ export default class AndroidAppStyles {
             },
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fffdb',
-                borderRadius: 8,
-                paddingLeft: '5%',
-                paddingRight: '5%',
+                backgroundColor: '#145cc7',
                 borderWidth: 1,
-                borderColor: '#009fffdb',
+                borderColor: '#145cc7',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -150,10 +147,9 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fffdb',
-                borderRadius: 8,
+                backgroundColor: '#145cc7',
                 borderWidth: 1,
-                borderColor: '#009fffdb',
+                borderColor: '#145cc7',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -168,11 +164,7 @@ export default class AndroidAppStyles {
                 flex: 1,
                 paddingBottom: 10,
                 paddingLeft: '5%',
-                paddingRight: '5%',
-                borderTopColor: '#FFF',
-                borderTopWidth: 1.8,
-                borderBottomRightRadius: 8,
-                borderBottomLeftRadius: 8
+                paddingRight: '5%'
             },
             notificationsContainerHeader: {
                 justifyContent: 'center',
@@ -198,6 +190,7 @@ export default class AndroidAppStyles {
                 fontFamily: 'Merriweather Sans'
             },
             inline: {
+                flex: 1,
                 flexDirection: 'row'
             },
             notificationsIconContainer: {
@@ -223,10 +216,9 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#009fffdb',
-                borderRadius: 8,
+                backgroundColor: '#145cc7',
                 borderWidth: 1,
-                borderColor: '#009fffdb',
+                borderColor: '#145cc7',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },

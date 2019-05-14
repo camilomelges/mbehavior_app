@@ -7,9 +7,10 @@ import _ from 'lodash';
 import AndroidAppStyles from './AndroidAppStyles';
 import AndroidNotifications from './AndroidNotifications';
 import AndroidPrizes from './AndroidPrizes';
+import AndroidHexagon from './AndroidHexagon';
 import AndroidMyData from './ResearchData';
 import AndroidAppsLifeTime from './AndroidAppsLifeTime';
-import unbImage from '../assets/images/unb.jpg';
+import unbImage from '../assets/images/unb2.jpg';
 
 const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
@@ -18,6 +19,7 @@ import {
   Text,
   View,
   StatusBar,
+  StyleSheet,
   Alert,
   ImageBackground,
   TouchableOpacity,
@@ -144,7 +146,7 @@ export default class AndroidInitialPage extends Component {
       case 1:
         return (<AndroidNotifications />);
       case 2:
-        return (<AndroidPrizes />);
+        return (<AndroidHexagon />);
       case 3:
         return (<AndroidMyData />);
       case 4:
@@ -202,15 +204,19 @@ export default class AndroidInitialPage extends Component {
                 imageStyle={{ resizeMode: 'cover', backgroundColor: '#009fff' }}>
                 <View style={this.state.styles.body}>
                   <View style={this.state.styles.buttonsContainer}>
-                    <TouchableOpacity onPress={() => this.setActualComponent(3)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusLeft]} title="Notificações" accessibilityLabel="Notificações">
-                      <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Pesquisa </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setActualComponent(2)} style={this.state.styles.buttonTop} title="Prêmios" accessibilityLabel="Prêmios">
-                      <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Prêmios </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setActualComponent(1)} style={[this.state.styles.buttonTop, this.state.styles.borderRadiusRight]} title="Meus dados" accessibilityLabel="Meus dados">
-                      <Text style={[this.state.styles.fontPattern, this.state.styles.alignCenter]}> Notificações </Text>
-                    </TouchableOpacity>
+                    <View style={[styles.triangleLeft, this.props.style]} />
+                    <View style={[styles.retangle, this.props.style, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
+                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: '#fff', left: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(3)} title="Notificações" accessibilityLabel="Notificações">
+                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Pesquisa </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{ justifyContent: 'center', height: '100%' }} onPress={() => this.setActualComponent(2)} title="Notificações" accessibilityLabel="Notificações">
+                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Prêmios </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderLeftWidth: 1, borderLeftColor: '#fff', right: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(1)} title="Notificações" accessibilityLabel="Notificações">
+                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Notificações </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={[styles.triangleRight, this.props.style]}></View>
                   </View>
                   <View style={this.state.styles.bodyContainer}>
                     {this.renderComponent()}
@@ -222,7 +228,7 @@ export default class AndroidInitialPage extends Component {
         </View>
       );
     } else {
-      return (<View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator size={100} color="#0000ff" /></View>)
+      return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator size={100} color="#0000ff" /></View>)
     }
   }
 
@@ -247,7 +253,7 @@ export default class AndroidInitialPage extends Component {
 // });
 
 
-function selectAppsOrderLastUsage (callback) {
+function selectAppsOrderLastUsage(callback) {
   db.transaction((tx) => {
     let lastOpenedApps = [];
     tx.executeSql(`SELECT * from apps WHERE last = 1`, [], function (tx, data) {
@@ -259,7 +265,7 @@ function selectAppsOrderLastUsage (callback) {
   });
 }
 
-function verifyIfOpenSchedule (apps, callback) {
+function verifyIfOpenSchedule(apps, callback) {
   // sqLiteAndroid.insertFirstApps(apps);
   selectAppsOrderLastUsage((lastOpenedApps) => {
     if (lastOpenedApps && lastOpenedApps.length) {
@@ -284,3 +290,41 @@ function verifyIfOpenSchedule (apps, callback) {
     }
   });
 }
+
+
+const styles = StyleSheet.create({
+  triangleLeft: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderTopWidth: 20,
+    borderBottomWidth: 20,
+    borderRightWidth: 6,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderRightColor: '#145cc7',
+  },
+  triangleRight: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderTopWidth: 20,
+    borderBottomWidth: 20,
+    borderLeftWidth: 6,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderLeftColor: '#145cc7',
+  },
+  retangle: {
+    backgroundColor: '#145cc7',
+    width: '87%',
+    height: 40
+  },
+  retangle2: {
+    backgroundColor: '#145cc7',
+    width: '100%',
+    height: 40
+  }
+});
