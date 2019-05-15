@@ -74,5 +74,3 @@ export default class AndroidNotifications extends Component {
     );
   }
 }
-
-// const styles = androidAppStyles.notifications();

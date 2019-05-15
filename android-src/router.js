@@ -16,10 +16,10 @@ const LoginRoutes = createStackNavigator({
   }
 }, {
     initialRouteName: 'Login',
-    // headerMode: 'none',
-    // navigationOptions: {
-    //   headerVisible: false,
-    // }
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    }
   });
 
 const HomeRoutes = createStackNavigator({

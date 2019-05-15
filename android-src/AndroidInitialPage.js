@@ -146,7 +146,7 @@ export default class AndroidInitialPage extends Component {
       case 1:
         return (<AndroidNotifications />);
       case 2:
-        return (<AndroidHexagon />);
+        return (<AndroidPrizes />);
       case 3:
         return (<AndroidMyData />);
       case 4:
@@ -192,7 +192,7 @@ export default class AndroidInitialPage extends Component {
         <View
           style={this.state.styles.container}
           onLayout={this.onLayout.bind(this)}>
-          <StatusBar backgroundColor="#145cc7" barStyle="light-content" />
+          <StatusBar backgroundColor="#0033ff" barStyle="light-content" />
           <View style={this.state.styles.usageDiaryContainer}>
             <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
             <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
@@ -206,13 +206,13 @@ export default class AndroidInitialPage extends Component {
                   <View style={this.state.styles.buttonsContainer}>
                     <View style={[styles.triangleLeft, this.props.style]} />
                     <View style={[styles.retangle, this.props.style, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
-                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: '#fff', left: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(3)} title="Notificações" accessibilityLabel="Notificações">
+                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderRightWidth: 2, borderRightColor: '#fff', left: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(3)} title="Notificações" accessibilityLabel="Notificações">
                         <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Pesquisa </Text>
                       </TouchableOpacity>
                       <TouchableOpacity style={{ justifyContent: 'center', height: '100%' }} onPress={() => this.setActualComponent(2)} title="Notificações" accessibilityLabel="Notificações">
                         <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Prêmios </Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderLeftWidth: 1, borderLeftColor: '#fff', right: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(1)} title="Notificações" accessibilityLabel="Notificações">
+                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderLeftWidth: 2, borderLeftColor: '#fff', right: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(1)} title="Notificações" accessibilityLabel="Notificações">
                         <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Notificações </Text>
                       </TouchableOpacity>
                     </View>
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 6,
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent',
-    borderRightColor: '#145cc7',
+    borderRightColor: '#0044ff',
   },
   triangleRight: {
     width: 0,
@@ -315,15 +315,15 @@ const styles = StyleSheet.create({
     borderLeftWidth: 6,
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent',
-    borderLeftColor: '#145cc7',
+    borderLeftColor: '#0044ff',
   },
   retangle: {
-    backgroundColor: '#145cc7',
+    backgroundColor: '#0044ff',
     width: '87%',
     height: 40
   },
   retangle2: {
-    backgroundColor: '#145cc7',
+    backgroundColor: '#0044ff',
     width: '100%',
     height: 40
   }

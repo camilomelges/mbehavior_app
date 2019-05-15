@@ -1,0 +1,15 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='210mm' height='297mm' viewBox='0 0 210 297'
+id='svg8'>
+    <g id='layer1'>
+        <path id='path815' d='M 158.63764,152.82631 64.244894,207.42551 -30.319387,152.72973 -30.437156,43.966454 64.16784,-10.884741 158.51987,43.626844 Z'
+        transform='translate(40.9 50.23)' fill='#00f' stroke='#fff' strokeWidth='0'
+        strokeOpacity='0.962' />
+        <path id='path815-3' d='m 142.94342,137.41751 -85.106938,49.03088 -84.866654,-48.912 -0.06974,-98.160089 84.985125,-49.006184 84.832896,48.856501 z'
+        transform='translate(47.078 60.09)' fill='#ff0' stroke='#fff' strokeWidth='0'
+        strokeOpacity='0.962' />
+        <path d='M 19.983578,99.476809 104.22987,147.3193 189.79635,99.317365'
+        id='path834' fill='#ff0' stroke='#00f' strokeWidth='9.801' />
+        <path d='m 104.22987,147.3193 0.68486,99.21983' id='path838' fill='none'
+        stroke='#00f' strokeWidth='9.801' />
+    </g>
+</svg>

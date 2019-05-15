@@ -15,13 +15,13 @@ export default class AndroidAppStyles {
         return StyleSheet.create({
             container: {
                 flex: 1,
-                backgroundColor: '#145cc7',
+                backgroundColor: '#0033ff',
             },
             usageDiaryContainer: {
                 flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.8 : 0.4,
                 paddingLeft: 15,
                 paddingTop: Dimensions.get('screen').height < Dimensions.get('screen').width ? 5 : 20,
-                backgroundColor: '#145cc7',
+                backgroundColor: '#0033ff',
                 flexDirection: 'row',
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -113,6 +113,7 @@ export default class AndroidAppStyles {
                 borderTopRightRadius: 8
             },
             buttonsContainer: {
+                opacity: .8,
                 flex: 0.05,
                 marginTop: 20,
                 marginBottom: 10,
@@ -130,9 +131,9 @@ export default class AndroidAppStyles {
             },
             notificationsContainer: {
                 flex: 1,
-                backgroundColor: '#145cc7',
+                backgroundColor: '#0033ff',
                 borderWidth: 1,
-                borderColor: '#145cc7',
+                borderColor: '#0033ff',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -146,10 +147,11 @@ export default class AndroidAppStyles {
     notifications() {
         return StyleSheet.create({
             notificationsContainer: {
+                opacity: .8,
                 flex: 1,
-                backgroundColor: '#145cc7',
+                backgroundColor: '#0033ff',
                 borderWidth: 1,
-                borderColor: '#145cc7',
+                borderColor: '#0033ff',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -215,10 +217,11 @@ export default class AndroidAppStyles {
     prizes() {
         return StyleSheet.create({
             notificationsContainer: {
+                opacity: .9,
                 flex: 1,
-                backgroundColor: '#145cc7',
+                backgroundColor: '#0033ff',
                 borderWidth: 1,
-                borderColor: '#145cc7',
+                borderColor: '#0033ff',
                 borderBottomWidth: 0,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
@@ -227,25 +230,25 @@ export default class AndroidAppStyles {
                 elevation: 4,
             },
             fontWhite: {
-                color: '#FFF'
+                color: '#fff'
             },
             notificationsContainerList: {
                 flex: 1,
                 paddingBottom: 10,
+                margin: '5%',
                 paddingLeft: '5%',
                 paddingRight: '5%',
-                borderTopColor: '#FFF',
-                borderTopWidth: 1.8,
-                borderBottomRightRadius: 8,
-                borderBottomLeftRadius: 8
+                borderRadius: 4,
+                borderColor: '#fff',
+                borderWidth: 2,
             },
             notificationsContainerHeader: {
                 justifyContent: 'center',
                 flex: Dimensions.get('screen').height < Dimensions.get('screen').width ? 0.2 : 0.1,
             },
             notificationsContainerListItem: {
-                borderBottomColor: '#dfe8ff',
-                borderBottomWidth: 1,
+                borderBottomColor: '#fff',
+                borderBottomWidth: 2,
                 paddingBottom: 8,
                 paddingTop: 8
             },

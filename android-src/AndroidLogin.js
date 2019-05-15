@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SqLiteAndroid from './SqLiteAndroid';
-import unbImage from '../assets/images/unb.jpg';
+import unbImage from '../assets/images/unb2.jpg';
+import mbappicon from '../assets/images/mbappicon.png';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { api } from '../config/api';
 
@@ -9,6 +10,7 @@ import {
   Button,
   TextInput,
   View,
+  Image,
   ActivityIndicator,
   StatusBar,
   NetInfo,
@@ -149,7 +151,9 @@ export default class AndroidLogin extends Component {
               style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}
               imageStyle={{ resizeMode: 'cover' }}>
               <View style={{ backgroundColor: '#00000069', flex: 1, padding: '15%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 70, fontWeight: 'bold', textShadowColor: '#000', textShadowOffset: { width: -1, height: 2 }, textShadowRadius: 10, color: '#003a82' }}>UnB</Text>
+                <Image
+                style={{maxHeight: 150, maxWidth: 140, backgroundColor: 'transparent', marginBottom: 20}} blurRadius={1} source={mbappicon} />
+                {/* <Text style={{ fontSize: 70, fontWeight: 'bold', textShadowColor: '#000', textShadowOffset: { width: -1, height: 2 }, textShadowRadius: 10, color: '#003a82' }}>UnB</Text> */}
                 <TextInput
                   value={this.state.email}
                   onChangeText={(email) => this.setState({ email })}
@@ -174,7 +178,7 @@ export default class AndroidLogin extends Component {
                 </View>
                 <View style={{ width: '100%', marginTop: '5%' }}>
                   <Button
-                    color='#003a82'
+                    color='#0033ff'
                     title={'Login'}
                     onPress={this.onLogin.bind(this)}
                   />
