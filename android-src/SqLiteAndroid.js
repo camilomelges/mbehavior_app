@@ -7,7 +7,7 @@ export default class SqLiteAndroid {
   createTableIfNotExists = () => {
     db.transaction((tx) => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageIcon TEXT, packageName TEXT, usageTime BIGINT UNSIGNED NOT NULL, lastUsageTime BIGINT UNSIGNED NOT NULL, usageInThisSession BIGINT UNSIGNED NOT NULL DEFAULT 0, last BIT NOT NULL DEFAULT 1, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
+        'CREATE TABLE IF NOT EXISTS apps(id INTEGER PRIMARY KEY AUTOINCREMENT, packageName TEXT, totalActivedTime BIGINT UNSIGNED NOT NULL, initTimeInInterval BIGINT UNSIGNED NOT NULL, lastTimeUsed BIGINT UNSIGNED NOT NULL DEFAULT 0, usageTime BIGINT UNSIGNED NOT NULL DEFAULT 0, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)',
         []
       );
       tx.executeSql(
@@ -26,14 +26,34 @@ export default class SqLiteAndroid {
     tx.executeSql('DROP TABLE IF EXISTS user', []);
   }
 
-  selectAllFromApps(callback) {
+  dropTableApps = (tx) => {
+    tx.executeSql('DROP TABLE IF EXISTS apps', []);
+  }
+
+  dropTableLocations = (tx) => {
+    tx.executeSql('DROP TABLE IF EXISTS locations', []);
+  }
+
+  selectAllFromApps = (callback) => {
     db.transaction((tx) => {
-      tx.executeSql("SELECT * FROM apps WHERE last = 0 ORDER BY id DESC", [], function (txn, data) {
+      tx.executeSql("SELECT * FROM apps ORDER BY id ASC", [], function (txn, data) {
         let apps = [];
         _.forEach(data.rows, function (app, key) {
           apps.push(data.rows.item(key));
         });
-        callback(apps);
+        return callback(apps);
+      });
+    })
+  }
+
+  selectAllFromLocations = (callback) => {
+    db.transaction((tx) => {
+      tx.executeSql("SELECT * FROM locations ORDER BY id ASC", [], function (txn, data) {
+        let locations = [];
+        _.forEach(data.rows, function (app, key) {
+          locations.push(data.rows.item(key));
+        });
+        return callback(locations);
       });
     })
   }
@@ -57,6 +77,18 @@ export default class SqLiteAndroid {
           return callback(false);
       });
     })
+  }
+
+  getUserEmail = async (callback) => {
+    db.transaction((tx) => {
+      tx.executeSql(`SELECT login FROM user`, [], function (txn, data) {
+        let email;
+        _.forEach(data.rows, function (app, key) {
+          email = data.rows.item(key).login;
+        });
+        return callback(email);
+      });
+    });
   }
 
   insertUser = async (email, callback) => {
@@ -104,12 +136,26 @@ export default class SqLiteAndroid {
 
   insertApp(app) {
     db.transaction((tx) => {
-      tx.executeSql(`INSERT INTO apps (packageIcon, packageName, usageTime, lastUsageTime, usageInThisSession) VALUES (
-        "${app.packageIcon}", 
+      tx.executeSql(`INSERT INTO apps (packageName, totalActivedTime, initTimeInInterval, lastTimeUsed, usageTime) VALUES (
         "${app.packageName}", 
-        "${app.usageTime}", 
-        "${app.lastUsageTime}", 
-        "${app.usageInThisSession}",
+        "${app.totalActivedTime}", 
+        "${app.initTimeInInterval}", 
+        "${app.lastTimeUsed}", 
+        "${app.usageTime}"
+        )`, []);
+    });
+  }
+
+  insertLocation(location) {
+    db.transaction((tx) => {
+      tx.executeSql(`INSERT INTO locations (timestamp, speed, heading, accuracy, longitude, altitude, latitude) VALUES (
+        "${location.timestamp}", 
+        "${location.coords.speed}", 
+        "${location.coords.heading}", 
+        "${location.coords.accuracy}", 
+        "${location.coords.longitude}",
+        "${location.coords.altitude}",
+        "${location.coords.latitude}"
         )`, []);
     });
   }

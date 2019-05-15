@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { LoginNavigation, HomeNavigation } from './android-src/router';
-import { AppRegistry, ActivityIndicator, View, NativeModules } from 'react-native';
+import { AppRegistry, ActivityIndicator, NetInfo, View, NativeModules } from 'react-native';
 import SqLiteAndroid from './android-src/SqLiteAndroid';
 import AndroiPermissions from './android-src/AndroidPermissions';
 import BackgroundFetch from "react-native-background-fetch";
+import { api } from './config/api';
 
 const sqLiteAndroid = new SqLiteAndroid();
 const androiPermissions = new AndroiPermissions();
@@ -36,7 +37,7 @@ export default class AndroidApp extends Component {
     }
   }
 
-  async backgroundFecth () {
+  async backgroundFecth() {
     BackgroundFetch.configure({
       minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
       stopOnTerminate: true,   // <-- Android-only,
@@ -45,6 +46,7 @@ export default class AndroidApp extends Component {
       forceReload: false
     }, () => {
       console.log("[js] Received background-fetch event");
+      this.sendDataForApi();
       BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
     }, (error) => {
       console.log("[js] RNBackgroundFetch failed to start");
@@ -52,7 +54,7 @@ export default class AndroidApp extends Component {
 
     // Optional: Query the authorization status.
     BackgroundFetch.status((status) => {
-      switch(status) {
+      switch (status) {
         case BackgroundFetch.STATUS_RESTRICTED:
           console.log("BackgroundFetch restricted");
           break;
@@ -66,15 +68,49 @@ export default class AndroidApp extends Component {
     });
   }
 
+  sendDataForApi = () => {
+    NetInfo.isConnected.fetch().done((isConnected) => {
+      if (!isConnected)
+        return;
+
+      sqLiteAndroid.getUserEmail((email) => {
+        if (!email)
+          return;
+
+          sqLiteAndroid.selectAllFromLocations((locations) => {
+            sqLiteAndroid.selectAllFromApps((apps) => {
+              return fetch(`${api.url}/users/save-data.json`, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, apps: apps, locations: locations, full_metal_app_token: api.full_metal_app_token })
+              })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                  console.log('Terminou de salvar os dados');
+                  //Se não der nenhum erro, excluir todo o historico do banco.
+                  //Se der erro, salvar no banco o erro.
+                })
+                .catch((error) => {
+                  alert(error);
+                });
+            });
+          });
+      });
+    });
+  }
+
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   renderComponent = () => {
     if (!this._isMounted || this.state.logged == null) {
-      return (<View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator size={100} color="#0000ff" /></View>);
+      return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator size={100} color="#0000ff" /></View>);
     } else {
-      return(<LoginNavigation/>);
+      return (<LoginNavigation />);
     }
   }
 
@@ -85,7 +121,8 @@ export default class AndroidApp extends Component {
 
 const LogLocation = async (data) => {
   navigator.geolocation.getCurrentPosition((position) => {
-   console.log(position);
+    console.log(position);
+    sqLiteAndroid.insertLocation(position);
   });
 }
 
@@ -93,7 +130,6 @@ const LauchApp = async (data) => {
   console.log('LauchApp');
   UsageStats.getActualApp()
     .then(app => {
-      return console.log(app);
       sqLiteAndroid.insertApp(app);
     })
     .catch(error => {
