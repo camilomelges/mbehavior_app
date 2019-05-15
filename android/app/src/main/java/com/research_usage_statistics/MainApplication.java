@@ -5,7 +5,6 @@ import com.research_usage_statistics.packages.*;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactlibrary.RNShapeImageViewPackage;
 import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -77,7 +76,6 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new SQLitePluginPackage(), new MainReactPackage(),
-            new RNShapeImageViewPackage(),
           new RNBackgroundFetchPackage(), new RNGestureHandlerPackage(), new RNDeviceInfo(), new VectorIconsPackage(),
           new ModulesPackage());
     }
