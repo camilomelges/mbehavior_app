@@ -4,6 +4,7 @@ import AndroidText from './AndroidText';
 
 import {
   FlatList,
+  TouchableOpacity,
   View,
   StyleSheet
 } from 'react-native';
@@ -14,6 +15,8 @@ export default class AndroidNotifications extends Component {
     super(props);
 
     this.state = {
+      showNotificationList: {height: 0},
+      show: true,
       forms: [{
         id: '0',
         name: 'Formulário educacional',
@@ -37,15 +40,26 @@ export default class AndroidNotifications extends Component {
     };
   };
 
+  showNotificationList = (show) => {
+    if (show) {
+      this.setState({ showNotificationList: {height: '100%'} });
+    } else {
+      this.setState({ showNotificationList: {height:  0} });
+    }
+    return this.setState({ show: !show });
+  }
+
   render() {
     return (
       <View style={styles.notifications}>
+        <TouchableOpacity onPress={() => this.showNotificationList(this.state.show)}>
         <View style={styles.notificationsHeader}>
           <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'envelope'} />
           <AndroidText>Notificações</AndroidText>
           <FontAwesome5 style={{fontSize: 20, color: '#fff', position: 'absolute', right: 0}} solid name={'chevron-right'} />
         </View>
-        <View style={styles.notificationsList}>
+        </TouchableOpacity>
+        <View style={[styles.notificationsList, this.state.showNotificationList]}>
         <FlatList
           data={this.state.forms}
           keyExtractor={item => item.id}
@@ -83,7 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   notificationsList: {
-    height: 0
-    // height: '100%'
+    // height: 0
+    height: '100%'
   }
 });

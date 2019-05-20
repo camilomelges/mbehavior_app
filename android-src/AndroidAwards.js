@@ -29,6 +29,8 @@ export default class AndroidPrizes extends Component {
     super(props);
 
     this.state = {
+      showAwardsList: {height: 0},
+      show: true,
       awards: [],
       isFetching: false
     };
@@ -60,6 +62,15 @@ export default class AndroidPrizes extends Component {
     });
   }
 
+  showAwardsList = (show) => {
+    if (show) {
+      this.setState({ showAwardsList: {height: '100%'} });
+    } else {
+      this.setState({ showAwardsList: {height:  0} });
+    }
+    return this.setState({ show: !show });
+  }
+
   setModalVisible = (id, visible) => {
     console.log('id', this.state.awards);
     this.setState(awards => {
@@ -79,12 +90,14 @@ export default class AndroidPrizes extends Component {
   render() {
     return (
       <View style={styles.awards}>
+        <TouchableOpacity onPress={() => this.showAwardsList(this.state.show)}>
         <View style={styles.awardsHeader}>
-        <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'trophy'} />
+          <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'trophy'} />
           <AndroidText>Prêmios</AndroidText>
           <FontAwesome5 style={{fontSize: 20, color: '#fff', position: 'absolute', right: 0}} solid name={'chevron-right'} />
         </View>
-        <View style={styles.awardsList}>
+        </TouchableOpacity>
+        <View style={[styles.awardsList, this.state.showAwardsList]}>
         <FlatList
           data={this.state.awards}
           keyExtractor={(item, id) => id.toString()}
@@ -112,8 +125,8 @@ export default class AndroidPrizes extends Component {
                     this.setModalVisible(item.id, 1);
                   }}>
                   <View style={styles.inline}>
-                    <View style={styles.notificationsIconContainer}>
-                      <FontAwesome5 style={styles.notificationsIcon} solid name={'money-bill'} />
+                    <View style={styles.awardsIconContainer}>
+                      <FontAwesome5 style={styles.awardsIcon} solid name={'money-bill'} />
                     </View>
                     <AndroidText>{item.name + '\nSorteio dia ' + moment(item.sortDate).format('DD/MM/YYYY')}</AndroidText>
                   </View>
@@ -129,6 +142,7 @@ export default class AndroidPrizes extends Component {
 
 const styles = StyleSheet.create({
   awards: {
+    flex: 1,
     borderBottomWidth: 1,
     paddingHorizontal: '5%',
     paddingVertical: '4%',
@@ -140,4 +154,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  notificationsList: {
+    // height: 0
+    height: '100%'
+  }
 });

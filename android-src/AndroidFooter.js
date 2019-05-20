@@ -18,8 +18,7 @@ export default class AndroidFooter extends Component {
   render() {
     return (
       <View style={[styles.appFooter]}>
-        <Image
-          style={{height: 150, width: 140}} blurRadius={1} source={mbappicon} />
+        <Image style={{height: 150, width: 140}} blurRadius={1} source={mbappicon} />
       </View>
     );
   };

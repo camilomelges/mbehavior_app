@@ -38,7 +38,7 @@ export default class AndroidHome extends Component {
             <AndroidResearch />
             <AndroidNotifications />
             <AndroidAwards />
-            <AndroidFooter />
+            <AndroidFooter/>
           </ScrollView>
         </View>
       </View>
