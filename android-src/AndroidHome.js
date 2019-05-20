@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AndroidStatusBarAndHeader from './AndroidStatusBarAndHeader';
-import AndroidNotifications from './AndroidNotifications';
+import AndroidForms from './AndroidForms';
 import AndroidAwards from './AndroidAwards';
 import AndroidFooter from './AndroidFooter';
 import AndroidResearch from './AndroidResearch';
@@ -30,17 +30,15 @@ export default class AndroidHome extends Component {
   render() {
     return (
       <View style={[styles.appHome]}>
-        <View style={{ flex: 0.1 }}>
+        <View style={{ flex: 0.13 }}>
           <AndroidStatusBarAndHeader />
         </View>
         <View style={styles.homeScrollView}>
-          <ScrollView contentContainerStyle={{}}>
             <AndroidResearch />
-            <AndroidNotifications />
+            <AndroidForms />
             <AndroidAwards />
-            <AndroidFooter/>
-          </ScrollView>
         </View>
+        <AndroidFooter />
       </View>
     );
   };
@@ -48,12 +46,11 @@ export default class AndroidHome extends Component {
 
 const styles = StyleSheet.create({
   appHome: {
-    backgroundColor: 'red',
+    backgroundColor: '#45c0ef',
     flex: 1,
     height: '100%'
   },
   homeScrollView: {
-    backgroundColor: '#84cfec',
-    flex: 0.9
+    flex: 0.7
   }
 });

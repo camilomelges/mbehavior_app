@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import mbappicon from '../assets/images/mbappicon.png';
+import AndroidText from './AndroidText';
 
 import {
   View,
@@ -18,7 +19,8 @@ export default class AndroidFooter extends Component {
   render() {
     return (
       <View style={[styles.appFooter]}>
-        <Image style={{height: 150, width: 140}} blurRadius={1} source={mbappicon} />
+        <Image style={{height: 90, width: 70}} blurRadius={1} source={mbappicon} />
+        <AndroidText style={{color: '#fff', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2, textShadowColor: '#000'}}>Parabéns, você esta contruindo para a ciência à 20 dias</AndroidText>
       </View>
     );
   };
@@ -26,9 +28,9 @@ export default class AndroidFooter extends Component {
 
 const styles = StyleSheet.create({
   appFooter: {
-    height: 200,
-    marginTop: '10%',
+    flex: 0.3,
     justifyContent: 'center',
+    paddingBottom: 20,
     alignItems: 'center'
   }
 });

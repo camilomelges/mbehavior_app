@@ -21,24 +21,28 @@ export default class AndroidResearch extends Component {
 
   showResearchList = (show) => {
     if (show) {
-      this.setState({ showResearchList: {height: '100%'} });
+      this.setState({ showResearchList: {height: '83.5%'}, changeResearchFlex: {flex: 0.76 }});
     } else {
-      this.setState({ showResearchList: {height:  0} });
+      this.setState({ showResearchList: {height: 0}, changeResearchFlex: {flex: 0.12 }});
     }
     return this.setState({ show: !show });
   }
 
   render() {
     return (
-      <View style={styles.research}>
-        <TouchableOpacity onPress={() => this.showResearchList(this.state.show)}>
+      <View style={[styles.research, this.state.changeResearchFlex]}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => this.showResearchList(this.state.show)}>
         <View style={styles.researchHeader}>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'search'} />
-          <AndroidText>Pesquisa</AndroidText>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', position: 'absolute', right: 0}} solid name={'chevron-right'} />
+          <View style={{width: '100%', alignItems: 'center', flexDirection: 'row'}}>
+            <View style={styles.fontCircle}>
+              <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'search'} />
+            </View>
+            <AndroidText>Pesquisa</AndroidText>
+            <FontAwesome5 style={{position: 'absolute', right: 0, fontSize: 20, color: '#fff'}} solid name={'chevron-right'} />
+          </View>
         </View>
         </TouchableOpacity>
-        <View style={[styles.notificationsText, this.state.showResearchList]}></View>
+        <View style={this.state.showResearchList}></View>
       </View>
     );
   };
@@ -46,13 +50,23 @@ export default class AndroidResearch extends Component {
 
 const styles = StyleSheet.create({
   research: {
-    flex: 1,
+    flex: 0.12,
+    justifyContent: 'center',
     borderBottomWidth: 1,
-    paddingHorizontal: '5%',
-    paddingVertical: '4%',
+    paddingRight: '5%',
+    paddingLeft: '3%',
+    paddingVertical: '2%',
     borderBottomColor: '#fff',
-    backgroundColor: '#4972dc',
-    justifyContent: 'flex-start'
+    backgroundColor: '#3d69d6'
+  },
+  fontCircle: {
+    marginRight: '2%',
+    backgroundColor: '#aeaeb7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    width: 40,
+    borderRadius: 50
   },
   researchHeader: {
     flex: 1,

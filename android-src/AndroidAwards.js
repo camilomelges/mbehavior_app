@@ -64,9 +64,9 @@ export default class AndroidPrizes extends Component {
 
   showAwardsList = (show) => {
     if (show) {
-      this.setState({ showAwardsList: {height: '100%'} });
+      this.setState({ showAwardsList: {height: '83.5%'}, changeAwardsFlex: {flex: 0.76 }});
     } else {
-      this.setState({ showAwardsList: {height:  0} });
+      this.setState({ showAwardsList: {height: 0}, changeAwardsFlex: {flex: 0.12 }});
     }
     return this.setState({ show: !show });
   }
@@ -89,12 +89,16 @@ export default class AndroidPrizes extends Component {
 
   render() {
     return (
-      <View style={styles.awards}>
-        <TouchableOpacity onPress={() => this.showAwardsList(this.state.show)}>
+      <View style={[styles.awards, this.state.changeAwardsFlex]}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => this.showAwardsList(this.state.show)}>
         <View style={styles.awardsHeader}>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'trophy'} />
-          <AndroidText>Prêmios</AndroidText>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', position: 'absolute', right: 0}} solid name={'chevron-right'} />
+          <View style={{width: '100%', alignItems: 'center', flexDirection: 'row'}}>
+            <View style={styles.fontCircle}>
+              <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'trophy'} />
+            </View>
+            <AndroidText>Prêmios</AndroidText>
+            <FontAwesome5 style={{position: 'absolute', right: 0, fontSize: 20, color: '#fff'}} solid name={'chevron-right'} />
+          </View>
         </View>
         </TouchableOpacity>
         <View style={[styles.awardsList, this.state.showAwardsList]}>
@@ -142,13 +146,23 @@ export default class AndroidPrizes extends Component {
 
 const styles = StyleSheet.create({
   awards: {
-    flex: 1,
+    flex: 0.12,
+    justifyContent: 'center',
     borderBottomWidth: 1,
-    paddingHorizontal: '5%',
-    paddingVertical: '4%',
-    backgroundColor: '#9daed8',
+    paddingRight: '5%',
+    paddingLeft: '3%',
+    paddingVertical: '2%',
     borderBottomColor: '#fff',
-    justifyContent: 'flex-start'
+    backgroundColor: '#8a9dd0'
+  },
+  fontCircle: {
+    marginRight: '2%',
+    backgroundColor: '#aeaeb7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    width: 40,
+    borderRadius: 50
   },
   awardsHeader: {
     flex: 1,

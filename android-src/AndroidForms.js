@@ -9,13 +9,13 @@ import {
   StyleSheet
 } from 'react-native';
 
-export default class AndroidNotifications extends Component {
+export default class AndroidForms extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      showNotificationList: {height: 0},
+      showFormsList: {height: 0},
       show: true,
       forms: [{
         id: '0',
@@ -40,26 +40,30 @@ export default class AndroidNotifications extends Component {
     };
   };
 
-  showNotificationList = (show) => {
+  showFormsList = (show) => {
     if (show) {
-      this.setState({ showNotificationList: {height: '100%'} });
+      this.setState({ showFormsList: {height: '83.5%'}, changeFormsFlex: {flex: 0.76 }});
     } else {
-      this.setState({ showNotificationList: {height:  0} });
+      this.setState({ showFormsList: {height: 0}, changeFormsFlex: {flex: 0.12 }});
     }
     return this.setState({ show: !show });
   }
 
   render() {
     return (
-      <View style={styles.notifications}>
-        <TouchableOpacity onPress={() => this.showNotificationList(this.state.show)}>
-        <View style={styles.notificationsHeader}>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'envelope'} />
-          <AndroidText>Notificações</AndroidText>
-          <FontAwesome5 style={{fontSize: 20, color: '#fff', position: 'absolute', right: 0}} solid name={'chevron-right'} />
+      <View style={[styles.forms, this.state.changeFormsFlex]}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => this.showFormsList(this.state.show)}>
+        <View style={styles.formsHeader}>
+          <View style={{width: '100%', alignItems: 'center', flexDirection: 'row'}}>
+            <View style={styles.fontCircle}>
+              <FontAwesome5 style={{fontSize: 20, color: '#fff', marginRight: '2%'}} solid name={'book-open'} />
+            </View>
+            <AndroidText>Formulários</AndroidText>
+            <FontAwesome5 style={{position: 'absolute', right: 0, fontSize: 20, color: '#fff'}} solid name={'chevron-right'} />
+          </View>
         </View>
         </TouchableOpacity>
-        <View style={[styles.notificationsList, this.state.showNotificationList]}>
+        <View style={this.state.showFormsList}>
         <FlatList
           data={this.state.forms}
           keyExtractor={item => item.id}
@@ -67,8 +71,8 @@ export default class AndroidNotifications extends Component {
             return (
               <View>
                 <View>
-                  <View style={styles.notificationsIconContainer}>
-                    <FontAwesome5 style={styles.notificationsIcon} solid name={'comment-alt'} />
+                  <View style={styles.formsIconContainer}>
+                    <FontAwesome5 style={styles.formsIcon} solid name={'comment-alt'} />
                   </View>
                   <AndroidText>{item.description}</AndroidText>
                 </View>
@@ -83,20 +87,30 @@ export default class AndroidNotifications extends Component {
 };
 
 const styles = StyleSheet.create({
-  notifications: {
-    flex: 1,
+  forms: {
+    flex: 0.12,
+    justifyContent: 'center',
     borderBottomWidth: 1,
-    paddingHorizontal: '5%',
-    paddingVertical: '4%',
+    paddingRight: '5%',
+    paddingLeft: '3%',
+    paddingVertical: '2%',
     borderBottomColor: '#fff',
-    backgroundColor: '#7490d8',
-    justifyContent: 'flex-start'
+    backgroundColor: '#5c7fd6'
   },
-  notificationsHeader: {
+  fontCircle: {
+    marginRight: '2%',
+    backgroundColor: '#aeaeb7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    width: 40,
+    borderRadius: 50
+  },
+  formsHeader: {
     flex: 1,
     flexDirection: 'row',
   },
-  notificationsList: {
+  formsList: {
     // height: 0
     height: '100%'
   }
