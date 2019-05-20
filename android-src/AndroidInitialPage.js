@@ -4,28 +4,17 @@ import tx from 'moment-timezone';
 import SQLite from 'react-native-sqlite-storage';
 import SqLiteAndroid from './SqLiteAndroid';
 import _ from 'lodash';
-import AndroidAppStyles from './AndroidAppStyles';
-import AndroidNotifications from './AndroidNotifications';
-import AndroidPrizes from './AndroidPrizes';
-import AndroidHexagon from './AndroidHexagon';
 import AndroidMyData from './ResearchData';
 import AndroidAppsLifeTime from './AndroidAppsLifeTime';
-import unbImage from '../assets/images/unb2.jpg';
+import AndroidHome from './AndroidHome';
 
-const androidAppStyles = new AndroidAppStyles();
 const sqLiteAndroid = new SqLiteAndroid();
 
 import {
-  Text,
   View,
-  StatusBar,
   StyleSheet,
-  Alert,
-  ImageBackground,
-  TouchableOpacity,
   NativeModules,
-  ActivityIndicator,
-  ScrollView
+  ActivityIndicator
 } from 'react-native';
 
 const UsageStats = NativeModules.UsageStats;
@@ -72,37 +61,11 @@ export default class AndroidInitialPage extends Component {
       isFetching: true,
       isDateTimePickerVisible: false,
       selectedDate: moment().tz('America/Cuiaba').format('DD/MM/YYYY'),
-      styles: androidAppStyles.index(),
       logged: false
     };
 
     // this.getStats();
   };
-
-  // verifyIfOpen = async (apps, callback) => {
-  //   // sqLiteAndroid.insertFirstApps(apps);
-  //   await this.selectAppsOrderLastUsage((lastOpenedApps) => {
-  //     if (lastOpenedApps && lastOpenedApps.length) {
-  //       _.forEach(lastOpenedApps, function (lastOpenedApp, lastOpenedAppKey) {
-  //         _.forEach(apps, function (app, appKey) {
-  //           if ((app.packageName === lastOpenedApp.packageName) && (app.usageTime != lastOpenedApp.usageTime)) {
-  //             lastOpenedApp.usageInThisSession = app.usageTime - lastOpenedApp.usageTime;
-  //             sqLiteAndroid.updateLastUsageApp(lastOpenedApp, lastOpenedApp => {
-  //               sqLiteAndroid.insertAppLast(app, app => {
-  //                 return callback(app);
-  //               });
-  //             });
-  //           }
-  //         });
-  //       });
-  //       callback(lastOpenedApps);
-  //     } else {
-  //       sqLiteAndroid.insertFirstApps((apps), apps => {
-  //         callback(apps);
-  //       });
-  //     }
-  //   });
-  // }
 
   componentDidMount() {
     this.setState({ isFetching: false });
@@ -153,7 +116,7 @@ export default class AndroidInitialPage extends Component {
         return (<AndroidAppsLifeTime />);
       default:
         return (
-          <View style={this.state.styles.notificationsContainer}>
+          <View>
             <ScrollView>
 
             </ScrollView>
@@ -182,49 +145,12 @@ export default class AndroidInitialPage extends Component {
     return `${parseInt(hours)} horas e ${parseInt(minutes)} minutos e ${parseInt(seconds)} segundos`;
   }
 
-  onLayout() {
-    this.setState({ styles: androidAppStyles.index() });
-  }
-
   _handleLoggedUser() {
     if (!this.state.isFetching) {
       return (
         <View
-          style={this.state.styles.container}
-          onLayout={this.onLayout.bind(this)}>
-          <StatusBar backgroundColor="#0033ff" barStyle="light-content" />
-          <View style={this.state.styles.usageDiaryContainer}>
-            <Text style={[this.state.styles.usageDiaryTitle, this.state.styles.fontPattern]}>Pesquisa</Text>
-            <Text style={[this.state.styles.usageDiarySelectedDate, this.state.styles.fontPattern]}>{this.state.selectedDate}</Text>
-          </View>
-          {
-            unbImage ?
-              <ImageBackground source={unbImage}
-                style={{ width: '100%', flex: 7 }}
-                imageStyle={{ resizeMode: 'cover', backgroundColor: '#009fff' }}>
-                <View style={this.state.styles.body}>
-                  <View style={this.state.styles.buttonsContainer}>
-                    <View style={[styles.triangleLeft, this.props.style]} />
-                    <View style={[styles.retangle, this.props.style, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
-                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderRightWidth: 2, borderRightColor: '#fff', left: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(3)} title="Notificações" accessibilityLabel="Notificações">
-                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Pesquisa </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={{ justifyContent: 'center', height: '100%' }} onPress={() => this.setActualComponent(2)} title="Notificações" accessibilityLabel="Notificações">
-                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Prêmios </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', borderLeftWidth: 2, borderLeftColor: '#fff', right: 5, height: '100%', width: '30%' }} onPress={() => this.setActualComponent(1)} title="Notificações" accessibilityLabel="Notificações">
-                        <Text style={{ fontFamily: 'Merriweather Sans', fontWeight: 'bold', color: '#fff' }}> Notificações </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={[styles.triangleRight, this.props.style]}></View>
-                  </View>
-                  <View style={this.state.styles.bodyContainer}>
-                    {this.renderComponent()}
-                  </View>
-                </View>
-              </ImageBackground>
-              : null
-          }
+          style={styles.initialPage}>
+          <AndroidHome/>
         </View>
       );
     } else {
@@ -293,38 +219,7 @@ function verifyIfOpenSchedule(apps, callback) {
 
 
 const styles = StyleSheet.create({
-  triangleLeft: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderTopWidth: 20,
-    borderBottomWidth: 20,
-    borderRightWidth: 6,
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-    borderRightColor: '#0044ff',
-  },
-  triangleRight: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderTopWidth: 20,
-    borderBottomWidth: 20,
-    borderLeftWidth: 6,
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-    borderLeftColor: '#0044ff',
-  },
-  retangle: {
-    backgroundColor: '#0044ff',
-    width: '87%',
-    height: 40
-  },
-  retangle2: {
-    backgroundColor: '#0044ff',
-    width: '100%',
-    height: 40
+  initialPage: {
+    flex: 1
   }
 });
