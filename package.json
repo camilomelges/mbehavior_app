@@ -1,5 +1,5 @@
 {
-  "name": "research_usage_statistics",
+  "name": "mbehaviorapp_app",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && REACT_ENV=dev react-native run-android"
   },
   "dependencies": {
+    "@react-native-community/blur": "^3.3.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "formik": "^1.5.3",
     "moment": "^2.24.0",
@@ -24,8 +25,10 @@
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-view": "^2.1.2",
     "react-native-modal-datetime-picker": "^7.4.0",
+    "react-native-shadow": "^1.2.2",
     "react-native-sqlite-storage": "^3.3.9",
     "react-native-storage": "^1.0.0",
+    "react-native-svg": "^9.4.0",
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.8.1",
     "watchman": "^1.0.0",

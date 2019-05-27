@@ -90,11 +90,9 @@ const styles = StyleSheet.create({
   forms: {
     flex: 0.12,
     justifyContent: 'center',
-    borderBottomWidth: 1,
     paddingRight: '5%',
     paddingLeft: '3%',
     paddingVertical: '2%',
-    borderBottomColor: '#fff',
     backgroundColor: '#5c7fd6'
   },
   fontCircle: {

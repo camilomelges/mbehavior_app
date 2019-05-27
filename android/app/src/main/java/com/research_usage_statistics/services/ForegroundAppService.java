@@ -1,4 +1,4 @@
-package com.research_usage_statistics.services;
+package com.mbehaviorapp.services;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import com.research_usage_statistics.MainActivity;
+import com.mbehaviorapp.MainActivity;
 
-import com.research_usage_statistics.R;
+import com.mbehaviorapp.R;
 
-import static com.research_usage_statistics.MainApplication.ForegroundAppChannel;
+import static com.mbehaviorapp.MainApplication.ForegroundAppChannel;
 
 public class ForegroundAppService extends Service {
 

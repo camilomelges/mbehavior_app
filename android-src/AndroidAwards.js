@@ -148,11 +148,9 @@ const styles = StyleSheet.create({
   awards: {
     flex: 0.12,
     justifyContent: 'center',
-    borderBottomWidth: 1,
     paddingRight: '5%',
     paddingLeft: '3%',
     paddingVertical: '2%',
-    borderBottomColor: '#fff',
     backgroundColor: '#8a9dd0'
   },
   fontCircle: {

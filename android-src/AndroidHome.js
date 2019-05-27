@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   homeScrollView: {
-    flex: 0.7
-  }
+    flex: 0.7,
+  },
 });

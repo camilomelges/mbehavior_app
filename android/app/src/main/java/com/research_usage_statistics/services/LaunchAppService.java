@@ -1,4 +1,4 @@
-package com.research_usage_statistics.services;
+package com.mbehaviorapp.services;
 
 import android.content.Intent;
 import android.os.Bundle;

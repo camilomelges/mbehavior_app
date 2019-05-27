@@ -1,4 +1,4 @@
-package com.research_usage_statistics.packages;
+package com.mbehaviorapp.packages;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

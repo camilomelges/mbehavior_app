@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.research_usage_statistics"
+    package="com.mbehaviorapp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,7 +23,7 @@
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       tools:replace="android:icon,android:allowBackup"
       android:theme="@style/AppTheme">
@@ -38,12 +38,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <service android:name="com.research_usage_statistics.services.ForegroundAppService" />
+      <service android:name="com.mbehaviorapp.services.ForegroundAppService" />
 
       
-      <service android:name="com.research_usage_statistics.services.LocationService" />
-      <service android:name="com.research_usage_statistics.services.LaunchAppService" />
-      <receiver android:name="com.research_usage_statistics.receiver.LaunchAppReceiver">
+      <service android:name="com.mbehaviorapp.services.LocationService" />
+      <service android:name="com.mbehaviorapp.services.LaunchAppService" />
+      <receiver android:name="com.mbehaviorapp.receiver.LaunchAppReceiver">
           <intent-filter android:priority="1000">
             <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
             <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -52,7 +52,7 @@
             <action android:name="YouWillNeverKillMe" />
           </intent-filter>
       </receiver>
-      <receiver android:name="com.research_usage_statistics.receiver.LocationReceiver">
+      <receiver android:name="com.mbehaviorapp.receiver.LocationReceiver">
           <intent-filter android:priority="1000">
             <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
             <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -60,7 +60,7 @@
             <action android:name="YouWillNeverKillMe" />
           </intent-filter>
       </receiver>
-      <receiver android:name="com.research_usage_statistics.receiver.GpsLocationReceiver">
+      <receiver android:name="com.mbehaviorapp.receiver.GpsLocationReceiver">
         <intent-filter android:priority="1000" android:enabled="true"
             android:exported="true">
             <action android:name="android.location.PROVIDER_CHANGED" />

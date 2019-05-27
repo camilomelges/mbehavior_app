@@ -23,7 +23,7 @@ export default class AndroidResearch extends Component {
     if (show) {
       this.setState({ showResearchList: {height: '83.5%'}, changeResearchFlex: {flex: 0.76 }});
     } else {
-      this.setState({ showResearchList: {height: 0}, changeResearchFlex: {flex: 0.12 }});
+      this.setState({ showResearchList: {height: 0}, changeResearchFlex: {flex: 0.14 }});
     }
     return this.setState({ show: !show });
   }
@@ -50,13 +50,11 @@ export default class AndroidResearch extends Component {
 
 const styles = StyleSheet.create({
   research: {
-    flex: 0.12,
+    flex: 0.14,
     justifyContent: 'center',
-    borderBottomWidth: 1,
     paddingRight: '5%',
     paddingLeft: '3%',
     paddingVertical: '2%',
-    borderBottomColor: '#fff',
     backgroundColor: '#3d69d6'
   },
   fontCircle: {

@@ -1,10 +1,12 @@
-package com.research_usage_statistics;
+package com.mbehaviorapp;
 
-import com.research_usage_statistics.packages.*;
+import com.mbehaviorapp.packages.*;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.cmcewen.blurview.BlurViewPackage;
+import com.horcrux.svg.SvgPackage;
 import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -28,11 +30,11 @@ import android.app.NotificationManager;
 import android.support.v4.app.NotificationCompat;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import com.research_usage_statistics.services.ForegroundAppService;
+import com.mbehaviorapp.services.ForegroundAppService;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
-import com.research_usage_statistics.services.LocationService;
+import com.mbehaviorapp.services.LocationService;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -76,6 +78,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new SQLitePluginPackage(), new MainReactPackage(),
+            new BlurViewPackage(),
+            new SvgPackage(),
           new RNBackgroundFetchPackage(), new RNGestureHandlerPackage(), new RNDeviceInfo(), new VectorIconsPackage(),
           new ModulesPackage());
     }

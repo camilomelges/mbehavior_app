@@ -1,8 +1,8 @@
-package com.research_usage_statistics.packages;
+package com.mbehaviorapp.packages;
 
 import android.widget.Toast;
 
-import com.research_usage_statistics.services.LaunchAppService;
+import com.mbehaviorapp.services.LaunchAppService;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;

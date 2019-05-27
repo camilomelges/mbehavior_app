@@ -1,6 +1,6 @@
-package com.research_usage_statistics;
+package com.mbehaviorapp;
 
-import com.research_usage_statistics.packages.*;
+import com.mbehaviorapp.packages.*;
 
 import com.facebook.react.ReactActivity;
 import java.util.Arrays;
@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
-import com.research_usage_statistics.services.LaunchAppService;
-import com.research_usage_statistics.receiver.LaunchAppReceiver;
+import com.mbehaviorapp.services.LaunchAppService;
+import com.mbehaviorapp.receiver.LaunchAppReceiver;
 import android.content.Context;
 import com.facebook.react.HeadlessJsTaskService;
 import android.app.ActivityManager;
@@ -22,11 +22,11 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
-import com.research_usage_statistics.services.ForegroundAppService;
+import com.mbehaviorapp.services.ForegroundAppService;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
-import com.research_usage_statistics.services.LocationService;
+import com.mbehaviorapp.services.LocationService;
 import java.lang.Thread;
 import android.support.v4.content.ContextCompat;
 import android.support.v13.app.ActivityCompat;
@@ -38,7 +38,7 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected String getMainComponentName() {
-        return "research_usage_statistics";
+        return "mbehaviorapp";
     }
 
     @Override

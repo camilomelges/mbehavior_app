@@ -98,9 +98,11 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.research_usage_statistics"
+        applicationId "com.mbehaviorapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
         versionCode 1
         versionName "1.0"
         ndk {
@@ -137,7 +139,13 @@ android {
 }
 
 dependencies {
+    compile project(':@react-native-community_blur')
+    compile project(':react-native-svg')
     implementation project(':react-native-background-fetch')
+    implementation 'com.facebook.fresco:fresco:1.+'
+    implementation 'com.facebook.fresco:animated-gif:1.+'
+    implementation 'com.facebook.fresco:animated-webp:1.+'
+    implementation 'com.facebook.fresco:webpsupport:1.+'
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-device-info')
     implementation project(':react-native-vector-icons')

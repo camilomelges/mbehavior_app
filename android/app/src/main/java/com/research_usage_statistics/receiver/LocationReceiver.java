@@ -1,11 +1,11 @@
-package com.research_usage_statistics.receiver;
+package com.mbehaviorapp.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.facebook.react.HeadlessJsTaskService;
-import com.research_usage_statistics.services.LocationService;
+import com.mbehaviorapp.services.LocationService;
 
 public final class LocationReceiver extends BroadcastReceiver {
 

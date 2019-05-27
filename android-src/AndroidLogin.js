@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SqLiteAndroid from './SqLiteAndroid';
 import unbImage from '../assets/images/unb2.jpg';
-import mbappicon from '../assets/images/mbappicon.png';
+import logo from '../assets/images/logo.png';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { api } from '../config/api';
 
@@ -152,7 +152,7 @@ export default class AndroidLogin extends Component {
               imageStyle={{ resizeMode: 'cover' }}>
               <View style={{ backgroundColor: '#00000069', flex: 1, padding: '15%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <Image
-                style={{maxHeight: 150, maxWidth: 140, backgroundColor: 'transparent', marginBottom: 20}} blurRadius={1} source={mbappicon} />
+                style={{maxHeight: 150, maxWidth: 140, backgroundColor: 'transparent', marginBottom: 20}} blurRadius={1} source={logo} />
                 {/* <Text style={{ fontSize: 70, fontWeight: 'bold', textShadowColor: '#000', textShadowOffset: { width: -1, height: 2 }, textShadowRadius: 10, color: '#003a82' }}>UnB</Text> */}
                 <TextInput
                   value={this.state.email}

@@ -20,7 +20,7 @@ export default class AndroidStatusBarAndHeader extends Component {
   render() {
     return (
       <View style={styles.androidStatusBarAndHeader}>
-        <StatusBar backgroundColor="#0048ff" barStyle="light-content" />
+        <StatusBar backgroundColor="#274394" barStyle="light-content" />
         <View style={styles.header}>
           <AndroidText style={styles.headerTitle}>mBehaviorApp</AndroidText>
           <AndroidText style={styles.headerToday}>{moment().tz('America/Cuiaba').format('DD/MM/YYYY')}</AndroidText>
@@ -33,9 +33,7 @@ export default class AndroidStatusBarAndHeader extends Component {
 const styles = StyleSheet.create({
   androidStatusBarAndHeader: {
     flex: 1,
-    borderBottomWidth: 3,
-    borderBottomColor: '#fff',
-    backgroundColor: '#0048ff',
+    backgroundColor: '#274394',
     paddingTop: 25,
     paddingLeft: '3%'
   },

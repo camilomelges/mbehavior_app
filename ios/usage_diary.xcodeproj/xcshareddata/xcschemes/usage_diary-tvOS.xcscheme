@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "research_usage_statistics-tvOS.app"
-               BlueprintName = "research_usage_statistics-tvOS"
-               ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+               BuildableName = "mbehaviorapp-tvOS.app"
+               BlueprintName = "mbehaviorapp-tvOS"
+               ReferencedContainer = "container:mbehaviorapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "research_usage_statistics-tvOSTests.xctest"
-               BlueprintName = "research_usage_statistics-tvOSTests"
-               ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+               BuildableName = "mbehaviorapp-tvOSTests.xctest"
+               BlueprintName = "mbehaviorapp-tvOSTests"
+               ReferencedContainer = "container:mbehaviorapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "research_usage_statistics-tvOSTests.xctest"
-               BlueprintName = "research_usage_statistics-tvOSTests"
-               ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+               BuildableName = "mbehaviorapp-tvOSTests.xctest"
+               BlueprintName = "mbehaviorapp-tvOSTests"
+               ReferencedContainer = "container:mbehaviorapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "research_usage_statistics-tvOS.app"
-            BlueprintName = "research_usage_statistics-tvOS"
-            ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+            BuildableName = "mbehaviorapp-tvOS.app"
+            BlueprintName = "mbehaviorapp-tvOS"
+            ReferencedContainer = "container:mbehaviorapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "research_usage_statistics-tvOS.app"
-            BlueprintName = "research_usage_statistics-tvOS"
-            ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+            BuildableName = "mbehaviorapp-tvOS.app"
+            BlueprintName = "mbehaviorapp-tvOS"
+            ReferencedContainer = "container:mbehaviorapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "research_usage_statistics-tvOS.app"
-            BlueprintName = "research_usage_statistics-tvOS"
-            ReferencedContainer = "container:research_usage_statistics.xcodeproj">
+            BuildableName = "mbehaviorapp-tvOS.app"
+            BlueprintName = "mbehaviorapp-tvOS"
+            ReferencedContainer = "container:mbehaviorapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
